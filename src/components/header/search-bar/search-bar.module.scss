@@ -1,0 +1,40 @@
+@import "../../global-scss/variables.scss";
+
+.searchbox-2{
+    height: rem(25px);
+    background: $color-blue-12;
+    display: flex;
+    padding: rem(2px);
+    border-radius: 2px;
+    align-items: center;
+    input{
+        display: flex;
+        height:rem(18px) !important;
+        font-size: rem($fs0);
+        font-weight: $fw-normal;
+        background: transparent;
+        color: $color-white;
+        border: none;
+        outline: none;
+        padding-left: rem(5px);
+        width: rem(275px);
+    }
+    input::placeholder {
+        color: $color-white;
+    }
+    button{
+        display: flex;
+        padding: 0;
+        background: transparent;
+        outline: none;
+        
+        height: rem(15px);
+        border: none;
+        padding-right: rem(2px);
+        padding-top: rem(1px);      
+    }
+    button:hover , button:focus{
+        background: transparent;
+    }
+    
+}
