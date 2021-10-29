@@ -1,0 +1,49 @@
+@import "../global-scss/variables.scss";
+
+.header {
+  width: 100%;
+  height: rem(50px);
+  background-image: url("../../../public/assets/images/common/header.png");
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid $color-blue-2 !important;
+  position: fixed;
+  top: 0;
+  z-index: 999;
+  font-family: $font-euclid-regular;
+  list-style-type: none;
+}
+
+.dropdown-menu {
+  margin-top: rem(12px);
+  padding: rem(9px) rem(2px);
+  font-family: $font-euclid-regular;
+  font-weight: $fw-normal;
+  font-size: $fs1;
+  line-height: $lh12;
+  color: $color-black-1;
+  background-color: blanchedalmond;
+  width: 100%;
+}
+
+.ml-auto {
+  margin-left: auto;
+}
+
+.icon {
+  color: $color-white !important;
+  cursor: pointer;
+  padding-right: 2%;
+}
+
+
+.bookshare {
+  margin-left: 2%;
+  color: $color-white;
+}
+
+.search-bar {
+  padding-right: 10%;
+}
+

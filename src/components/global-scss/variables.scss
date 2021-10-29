@@ -1,0 +1,129 @@
+$font-euclid-medium: "EuclidCircularA-Medium";
+$font-euclid-semibold: "EuclidCircularA-SemiBold";
+$font-euclid-regular: "EuclidCircularA-Regular";
+$font-euclid-bold: "EuclidCircularA-Bold";
+@use "sass:math";
+
+@font-face {
+  font-family: $font-euclid-medium;
+  src: url("/fonts/EuclidCircularA-Medium.ttf");
+}
+
+@font-face {
+  font-family: $font-euclid-semibold;
+  src: url("/fonts/EuclidCircularA-SemiBold.ttf");
+}
+
+@font-face {
+  font-family: $font-euclid-bold;
+  src: url("/fonts/EuclidCircularA-Bold.ttf");
+}
+
+@font-face {
+  font-family: $font-euclid-regular;
+  src: url("/fonts/EuclidCircularA-Regular.ttf");
+}
+
+@font-face {
+  font-family: $font-euclid-bold;
+  src: url("/fonts/EuclidCircularA-Bold.ttf");
+}
+
+$font-family-main: Arial;
+
+$fw-light: 300;
+$fw-normal: 400;
+$fw-medium: 500;
+$fw-semiBold: 600;
+$fw-bold: 700;
+$fw-black: 900;
+
+$fs0: 12px;
+$fs1: 14px;
+$fs2: 16px;
+$fs3: 28px;
+$fs4: 18px;
+$fs6: 13px;
+$fs7: 24px;
+$fs8: 28px;
+$fs9: 20px;
+
+$f3: 32px;
+$f4: 40px;
+$f16: 14px;
+$f19: 24px;
+$f9: 13px;
+
+$lh1: 21px;
+$lh2: 24px;
+$lh3: 30px;
+$lh4: 28px;
+$lh6: 24px;
+$lh7: 20px;
+$lh11: 16px;
+$lh12: 17px;
+$lh9: 19px;
+
+
+$primary-color: #61B3FF;
+$color-light-main: #D0E8FF;
+$color-light-green: #d0e3bb;
+$color-lighter-green: #fbfdf7;
+$color-line: #e4e4e4;
+$color-orange: #c95c0e;
+$color-light-orange: #eb7825;
+
+$color-blue: #5770ff;
+$color-blue-1: #e7f5ff;
+$color-blue-2: #54acec;
+$color-blue-3: #4b94cd;
+$color-blue-4: #73b4dc;
+$color-blue-5: #6dc0fc;
+$color-blue-6: #cad9e2;
+$color-blue-7: #ddeefb;
+$color-blue-8: #f7f8fc;
+$color-blue-9: #e2f5ff;
+$color-blue-10: #edf7ff;
+$color-blue-11: #daebff;
+$color-blue-12: #65b7f1;
+
+$color-black: #000000;
+$color-light-black: #080a0b;
+$color-black-1: #1e2024;
+$color-black-4: #1D1F22;
+$color-black-3: #e4e4e4;
+$color-lighter-black: #1c1d22;
+
+$color-bold-white: #f7f8fc;
+$color-white: #ffffff;
+$color-white-2: #f0f2f8;
+$color-bolder-white: #ffeee2;
+
+
+$color-bg: #7d818b;
+$color-gray: #999999;
+$color-gray-1: #505050;
+$color-gray-3: #ebecec;
+$color-gray-4: #858585;
+$color-gray-5: #7d818b;
+$color-gray-6: #dfe3e8;
+$color-gray-7: #f0f2f8;
+$color-gray-8: #626167;
+$color-gray-9: #7b7b7b;
+$color-gray-10: #606060;
+$color-gray-disable: #919eab;
+$color-gray-11: #c4c4c4;
+$color-gray-12: #eeefef;
+$color-gray-13: #dcdcdc;
+
+$color-red: #d13434;
+$color-red-1: #e86969;
+$color-red3: #d13434;
+$color-pink: #dc3a61;
+
+$base-size: 16px;
+
+@function rem($size, $context: $base-size) {
+  @return math.div($size, $base-size) * 1rem;
+}
+
