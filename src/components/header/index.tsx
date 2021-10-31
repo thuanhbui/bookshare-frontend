@@ -9,7 +9,7 @@ import { SearchBar } from "./search-bar";
 
 export const Header = () => {
   const router = useRouter();
-  const [isLogged, setIsLogged] = useState(false);
+  const [isLogged, setIsLogged] = useState(true);
 
   // useEffect(() => {
   // 	if (typeof window !== "undefined") {
@@ -31,7 +31,7 @@ export const Header = () => {
     return (
       <Menu className={`${style["dropdown-menu"]}`}>
         <Menu.Item>Account</Menu.Item>
-        <Menu.Item>Logout</Menu.Item>
+        <Menu.Item>Log out</Menu.Item>
       </Menu>
     );
   };
@@ -40,7 +40,7 @@ export const Header = () => {
     return (
       <>
         <Menu.Item
-          className={`${style["icon"]}`}
+          className={`${style["icon"]} ${style["disable-antd-css"]}`}
           onClick={() => {
             router.push("/bookshelf");
           }}
@@ -48,14 +48,15 @@ export const Header = () => {
           <HddOutlined />
         </Menu.Item>
 
-        <Menu.Item className={`${style["icon"]}`}>
-          {/* <Dropdown
+        <Menu.Item className={`${style["icon"]} ${style["disable-antd-css"]}`}>
+          <Dropdown
             overlay={UserDropdownMenu}
             trigger={["click"]}
             placement="bottomCenter"
-          > */}
-          <UserOutlined />
-          {/* </Dropdown> */}
+          >
+            <div><UserOutlined /></div>
+            
+          </Dropdown>
         </Menu.Item>
       </>
     );
@@ -64,7 +65,12 @@ export const Header = () => {
   const UnSigned = () => {
     return (
       <>
-        <Menu.Item className={`${style["icon"]}`} onClick={() => router.push('/login')}>Sign in</Menu.Item>
+        <Menu.Item
+          className={`${style["icon"]} ${style["disable-antd-css"]}`}
+          onClick={() => router.push("/login")}
+        >
+          Sign in
+        </Menu.Item>
       </>
     );
   };
@@ -72,12 +78,18 @@ export const Header = () => {
   return (
     <>
       <Menu mode="horizontal" className={`${style["header"]}`}>
-        <Menu.Item className={`${style["bookshare"]}`}>
-          <BookOutlined/>
-          <a href="/">BookShare</a>
+        <Menu.Item
+          className={`${style["bookshare"]} ${style["disable-antd-css"]}`}
+        >
+          <BookOutlined />
+          <a href="/" style={{ color: "white" }}>
+            BookShare
+          </a>
         </Menu.Item>
 
-        <Menu.Item className={`${style["ml-auto"]} ${style["search-bar"]}`}>
+        <Menu.Item
+          className={`${style["ml-auto"]} ${style["search-bar"]} ${style["disable-antd-css"]}`}
+        >
           <SearchBar></SearchBar>
         </Menu.Item>
         {isLogged ? <Signed /> : <UnSigned />}
