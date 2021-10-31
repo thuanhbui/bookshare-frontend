@@ -23,7 +23,7 @@
   font-size: $fs1;
   line-height: $lh12;
   color: $color-black-1;
-  background-color: blanchedalmond;
+  background-color: $color-white;
   width: 100%;
 }
 
@@ -37,7 +37,6 @@
   padding-right: 2%;
 }
 
-
 .bookshare {
   margin-left: 2%;
   color: $color-white;
@@ -47,3 +46,21 @@
   padding-right: 10%;
 }
 
+.disable-antd-css {
+  &:hover {
+    color: $color-white !important;
+    border: none !important;
+  }
+  &:focus {
+    color: $color-white !important;
+    border: none !important;
+  }
+  &:active {
+    color: $color-white !important;
+    border: none !important;
+  }
+}
+
+.disable-antd-css::after {
+  border-bottom: none !important;
+}
