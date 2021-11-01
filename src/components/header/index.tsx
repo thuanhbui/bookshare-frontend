@@ -40,7 +40,7 @@ export const Header = () => {
     return (
       <>
         <Menu.Item
-          className={`${style["icon"]} ${style["disable-antd-css"]}`}
+          className={`${style["icon"]} ${style["disable-antd-css"]} ${style["ml-auto"]}`}
           onClick={() => {
             router.push("/bookshelf");
           }}
@@ -66,7 +66,7 @@ export const Header = () => {
     return (
       <>
         <Menu.Item
-          className={`${style["icon"]} ${style["disable-antd-css"]}`}
+          className={`${style["icon"]} ${style["disable-antd-css"]} ${style["ml-auto"]}`}
           onClick={() => router.push("/login")}
         >
           Sign in
@@ -85,12 +85,6 @@ export const Header = () => {
           <a href="/" style={{ color: "white" }}>
             BookShare
           </a>
-        </Menu.Item>
-
-        <Menu.Item
-          className={`${style["ml-auto"]} ${style["search-bar"]} ${style["disable-antd-css"]}`}
-        >
-          <SearchBar></SearchBar>
         </Menu.Item>
         {isLogged ? <Signed /> : <UnSigned />}
       </Menu>

@@ -8,11 +8,13 @@ export const ItemComponent = ({ id = "" }) => {
   const router = useRouter();
 
   const [isLogged, setIsLogged] = useState(false);
+
   const [data, setData] = useState({
     thumbnailSrc: '',
     serieName: '',
     isFavorited: false,
   });
+  
   const [favorite, setFavorite] = useState(data.isFavorited);
 
   const convertLongString = (
@@ -30,6 +32,8 @@ export const ItemComponent = ({ id = "" }) => {
 
   useEffect(() => {
     //call api to get data
+    console.log("huhuhu");
+    
     setData({
       thumbnailSrc: "/mockup/item.jpg",
       serieName: 'This name',
