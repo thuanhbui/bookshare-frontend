@@ -47,7 +47,7 @@ export const ItemComponent = ({ id = "" }) => {
   };
 
   const handleMoveToItem = () => {
-    router.push(`/item/${id}`);
+    router.push(`/item?itemId=${id}`);
   };
 
   return (
