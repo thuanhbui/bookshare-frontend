@@ -1,0 +1,23 @@
+@import "@components/global-scss/variables.scss";
+
+.ml-auto {
+  margin-left: auto;
+}
+
+.mr-auto {
+  margin-right: auto;
+}
+
+.ml-auto,
+.mr-auto {
+  display: flex;
+  justify-content: center;
+  width: rem(52px);
+  height: rem(160px);
+  padding: rem(72px) rem(18px) rem(72px) rem(18px);
+  cursor: pointer;
+}
+
+.right-arr {
+  cursor: pointer;
+}

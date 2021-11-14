@@ -4,7 +4,7 @@ import { HeartFilled, HeartOutlined } from "@ant-design/icons";
 import { Tooltip } from "antd";
 import { useRouter } from "next/router";
 
-export const ItemComponent = ({ id = "" }) => {
+export const ItemComponent = ({ id = "", classNames = "" }) => {
   const router = useRouter();
 
   const [isLogged, setIsLogged] = useState(false);
@@ -52,7 +52,7 @@ export const ItemComponent = ({ id = "" }) => {
 
   return (
     <>
-      <div className={`${style["serie-component"]} ${style[""]}`}>
+      <div className={`${style["serie-component"]} ${style[classNames]}`}>
         <div className={`${style["cursor_pointer"]}`}>
           <img
             src={data.thumbnailSrc}

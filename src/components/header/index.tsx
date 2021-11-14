@@ -4,7 +4,12 @@ import Router, { useRouter } from "next/router";
 import Link from "next/link";
 // import { GetUserInfo } from "src/api/auth";
 import style from "./header.module.scss";
-import { UserOutlined, HddOutlined, BookOutlined } from "@ant-design/icons";
+import {
+  UserOutlined,
+  HddOutlined,
+  BookOutlined,
+  PlusCircleOutlined,
+} from "@ant-design/icons";
 import { SearchBar } from "./search-bar";
 
 export const Header = () => {
@@ -31,6 +36,7 @@ export const Header = () => {
     return (
       <Menu className={`${style["dropdown-menu"]}`}>
         <Menu.Item>Account</Menu.Item>
+        <Menu.Item>My Books</Menu.Item>
         <Menu.Item>Log out</Menu.Item>
       </Menu>
     );
@@ -47,6 +53,9 @@ export const Header = () => {
         >
           <HddOutlined />
         </Menu.Item>
+        <Menu.Item className={`${style["icon"]} ${style["disable-antd-css"]}`}>
+          <PlusCircleOutlined />
+        </Menu.Item>
 
         <Menu.Item className={`${style["icon"]} ${style["disable-antd-css"]}`}>
           <Dropdown
@@ -54,8 +63,9 @@ export const Header = () => {
             trigger={["click"]}
             placement="bottomCenter"
           >
-            <div><UserOutlined /></div>
-            
+            <div>
+              <UserOutlined />
+            </div>
           </Dropdown>
         </Menu.Item>
       </>
