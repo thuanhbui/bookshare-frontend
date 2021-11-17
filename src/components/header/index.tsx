@@ -53,7 +53,7 @@ export const Header = () => {
         >
           <HddOutlined />
         </Menu.Item>
-        <Menu.Item className={`${style["icon"]} ${style["disable-antd-css"]}`}>
+        <Menu.Item className={`${style["icon"]} ${style["disable-antd-css"]}`} onClick={() => router.push('/upload')}>
           <PlusCircleOutlined />
         </Menu.Item>
 
