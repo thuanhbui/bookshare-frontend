@@ -5,7 +5,7 @@ import { SeeMoreNoResult } from "../no-result";
 import { PageNavigation } from "../pagination";
 import { ItemComponent } from "../item";
 
-export const ListItems = ({ selectedCate }) => {
+export const BookShelf = ({ selectedCate }) => {
   const router = useRouter();
 
   const [totalProduct, setTotalProduct] = useState(0);

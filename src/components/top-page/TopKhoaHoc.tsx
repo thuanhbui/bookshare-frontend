@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import { ItemComponent } from "@components/item"
 import { SeeMoreNoResult } from "@components/no-result"
 
-export const TopHotBooks = ({ category = "all", search = "" }) => {
+export const TopKhoaHoc = ({ category = "all", search = "" }) => {
   const [data, setData] = useState(null);
   const itemWidth = 176;
   const [total, setTotal] = useState(0);
@@ -110,7 +110,7 @@ export const TopHotBooks = ({ category = "all", search = "" }) => {
       <div
         className={`${style["list-series-header"]} ${style["new-list-series-header"]}`}
       >
-        <span className={`${style["list-series-tag"]}`}>Top Sách Hot</span>
+        <span className={`${style["list-series-tag"]}`}>Top Sách Khoa học</span>
         <span
           className={`${style["see-all-tag"]}`}
           onClick={() =>
