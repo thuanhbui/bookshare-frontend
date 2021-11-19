@@ -1,6 +1,6 @@
 import { Col, Row, Button } from "antd";
 import React, { useState, useEffect } from "react";
-import style from "./episode.module.scss";
+import style from "./item.module.scss";
 import { useRouter } from "next/router";
 
 export const PurchasedItem = ({
