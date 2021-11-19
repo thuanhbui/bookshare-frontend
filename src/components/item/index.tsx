@@ -3,19 +3,16 @@ import React, { useEffect, useState } from "react";
 import { HeartFilled, HeartOutlined } from "@ant-design/icons";
 import { Tooltip } from "antd";
 import { useRouter } from "next/router";
+import BookAPI from "../../api/book"
 
 export const ItemComponent = ({ id = "", classNames = "" }) => {
   const router = useRouter();
 
   const [isLogged, setIsLogged] = useState(false);
 
-  const [data, setData] = useState({
-    thumbnailSrc: '',
-    serieName: '',
-    isFavorited: false,
-  });
+  const [data, setData] = useState(null);
   
-  const [favorite, setFavorite] = useState(data.isFavorited);
+  const [favorite, setFavorite] = useState(data?.isFavorited);
 
   const convertLongString = (
     string: string,
@@ -31,14 +28,18 @@ export const ItemComponent = ({ id = "", classNames = "" }) => {
   };
 
   useEffect(() => {
-    //call api to get data
-    console.log("huhuhu");
-    
     setData({
       thumbnailSrc: "/mockup/item.jpg",
       serieName: 'This name',
       isFavorited: true,
     });
+
+    BookAPI.getInfo(id).then((res) => {
+      setData({...data,thumbnailSrc: "http://localhost:9001" + res?.data?.imageLink, serieName: res?.data?.title});
+    }).catch((err) => {
+      console.log(err);
+    })
+
   }, []);
 
   const onClickFavorite = () => {
@@ -55,19 +56,19 @@ export const ItemComponent = ({ id = "", classNames = "" }) => {
       <div className={`${style["serie-component"]} ${style[classNames]}`}>
         <div className={`${style["cursor_pointer"]}`}>
           <img
-            src={data.thumbnailSrc}
+            src={data?.thumbnailSrc}
             className={`${style["serie-image"]}`}
             onClick={handleMoveToItem}
           />
           <div
             className={`${style["cursor_pointer"]} ${style["bottom-detail"]} ${style["flex-end"]}`}
           >
-            <Tooltip title={data.serieName}>
+            <Tooltip title={data?.serieName}>
               <div
                 className={`${style["serie-name"]}`}
                 onClick={handleMoveToItem}
               >
-                {convertLongString(data.serieName, 22)}
+                {convertLongString(data?.serieName, 22)}
               </div>
             </Tooltip>
 

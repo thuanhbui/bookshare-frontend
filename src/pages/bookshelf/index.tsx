@@ -15,9 +15,6 @@ const BookShelfPage = (props) => {
       setParam({
         itemId: router.query.itemId,
       });
-    TestApi.firstTest().then((data) => {
-      console.log(data);
-    });
   }, [router.isReady]);
 
   return (
