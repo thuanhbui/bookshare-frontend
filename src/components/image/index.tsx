@@ -55,7 +55,7 @@ const CustomImageField = (props) => {
   return (
     <div>
       <div className="main-image">
-        <Image
+        <img
           className={overrideClassNames.join(" ")}
           src={src}
           alt={alt}

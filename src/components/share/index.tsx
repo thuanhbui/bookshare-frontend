@@ -1,4 +1,4 @@
-import style from "../../layout/episode/episode.module.scss";
+import style from "../../templates/item/item.module.scss";
 import React, {useEffect, useRef, useState} from "react";
 
 const Share = ({episodeId, thumbnail}) => {
