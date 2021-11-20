@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { HeartFilled, HeartOutlined } from "@ant-design/icons";
 import { Tooltip } from "antd";
 import { useRouter } from "next/router";
-import BookAPI from "../../api/book"
+import BookAPI from "src/api/book"
 
 export const ItemComponent = ({ id = "", classNames = "" }) => {
   const router = useRouter();

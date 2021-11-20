@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { SeeMoreNoResult } from "../no-result";
 import { PageNavigation } from "../pagination";
 import { ItemComponent } from "../item";
-import UserAPI from "../../api/user";
+import UserAPI from "src/api/user";
 
 export const BookShelf = ({ selectedCate }) => {
   const router = useRouter();
