@@ -16,4 +16,20 @@ export default {
         console.log(e);
       });
   },
+  uploadBook: ({ formdata }) => {
+
+    const _axios = axios.create();
+
+    return _axios({
+      method: "post",
+      url: `${API_BASE_URL}/books?userId=1`,
+      data: formdata,
+    })
+      .then((data) => {
+        return data;
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  },
 };

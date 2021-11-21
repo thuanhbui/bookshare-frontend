@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useRef, useState } from "react";
-import style from "./upload-photo.module.scss";
+import style from "./file-upload.module.scss";
 import { Document, Page, pdfjs } from "react-pdf";
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
@@ -8,9 +8,7 @@ export const FileUpload = ({
   className = "",
   setFile,
   errorMsg = "",
-  seriesInfo,
   setCoverType,
-  hasCover,
   validateAll,
   setCoverErrMsg,
 }) => {
@@ -35,38 +33,13 @@ export const FileUpload = ({
       let ext = file.name.substring(lastDot + 1);
       let videoUrl = URL.createObjectURL(file);
       let bookUrl = "";
-      if (ext == "mp3" || ext == "m4a") {
-        window.localStorage.setItem("music-url", videoUrl);
-        window.localStorage.setItem("video-url", "");
-      } else if (ext == "mp4" || ext == "m4a" || ext == "mpeg4") {
-        window.localStorage.setItem("video-url", videoUrl);
-        window.localStorage.setItem("music-url", "");
-      }
 
-      if (ext == "pdf" || "png" || "jpeg" || "jpg") {
+      if (ext == "pdf") {
         bookUrl = URL.createObjectURL(file);
         window.localStorage.setItem("book-url", bookUrl);
       }
 
-      if (
-        ((ext === "pdf" || ext === "epub") &&
-          (seriesInfo == "Comic" ||
-            seriesInfo == "Novel" ||
-            seriesInfo == "Artwork") &&
-          file.size < 50000000) ||
-        ((ext === "png" || ext === "jpeg" || ext === "jpg") &&
-          seriesInfo == "Artwork" &&
-          file.size < 10000000) ||
-        ((ext === "mp4" || ext === "m4v") &&
-          seriesInfo == "Video" &&
-          file.size < 1000000000) ||
-        ((ext === "mp3" || ext === "m4a") &&
-          seriesInfo == "Music" &&
-          file.size < 1000000000) ||
-        ((ext === "mp3" || ext === "m4a" || ext === "mp4" || ext === "m4v") &&
-          seriesInfo == "Music & Video" &&
-          file.size < 1000000000)
-      ) {
+      if ((ext === "pdf" || ext === "epub") && file.size < 50000000) {
         setFilePreview(file);
         setFileName(file.name);
         setFileExt(ext);
@@ -109,12 +82,12 @@ export const FileUpload = ({
             window.localStorage.removeItem("video-thumbnail");
           }}
         >
-          <Image src="/icons/trash.svg" width={41} height={41} />
+          <Image src="/assets/icons/trash.svg" width={41} height={41} />
         </div>
       )}
 
       <div className={`${style["cover-photo-content"]}`}>
-        <Image src="/icons/cloud.png" height={74} width={74} />
+        <Image src="/assets/icons/cloud.png" height={74} width={74} />
 
         <div className={`${style["cover-photo-header"]}`}>Upload File</div>
 
@@ -124,9 +97,9 @@ export const FileUpload = ({
             onClick={onButtonClick}
             style={{ cursor: "pointer" }}
           >
-            Browse to
+            Browse
           </span>{" "}
-          choose file
+          to choose file
         </div>
 
         <div className={`${style["file-upload-notice"]}`}>
@@ -141,7 +114,7 @@ export const FileUpload = ({
           onChange={(e) => {
             onFileChange(e);
           }}
-          accept="application/pdf, .epub, .png, .jpeg, .jpg, video/mp4, video/mpeg4, video/m4v, audio/mp3, .m4a, .mpeg4"
+          accept="application/pdf"
           style={{ display: "none" }}
         />
         {errorMsg !== "" && (
@@ -162,7 +135,7 @@ export const FileUpload = ({
                 <div
                   className={`${style["video-preview"]} ${style["file-img"]}`}
                 >
-                  <img src={"/images/pdf-default.png"}></img>
+                  <img src={"/assets/images/pdf-default.png"}></img>
                 </div>
                 {/* <Document
                   className={`${style["file-img"]}`}
