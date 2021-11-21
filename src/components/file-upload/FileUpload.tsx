@@ -8,22 +8,13 @@ export const FileUpload = ({
   className = "",
   setFile,
   errorMsg = "",
-  setCoverType,
   validateAll,
-  setCoverErrMsg,
 }) => {
   const inputFile = useRef(null);
   const [filePreview, setFilePreview] = useState(null);
   const [fileName, setFileName] = useState("");
   const [fileExt, setFileExt] = useState("");
-  const [videoUrl, setVideoUrl] = useState("");
   const containerRef = useRef(null);
-  const [imageUrl, setImageUrl] = useState("");
-
-  const onClickPreview = () => {
-    setCoverErrMsg(`Input cover before preview`);
-    validateAll();
-  };
 
   const onFileChange = async (e) => {
     validateAll();
@@ -31,7 +22,6 @@ export const FileUpload = ({
       let file = e.target.files[0];
       let lastDot = file.name.lastIndexOf(".");
       let ext = file.name.substring(lastDot + 1);
-      let videoUrl = URL.createObjectURL(file);
       let bookUrl = "";
 
       if (ext == "pdf") {
@@ -43,12 +33,9 @@ export const FileUpload = ({
         setFilePreview(file);
         setFileName(file.name);
         setFileExt(ext);
-        setVideoUrl(videoUrl);
-        setCoverType(ext);
-        setImageUrl(bookUrl);
       }
       setFile({ file: e.target.files[0] });
-    } else console.log("Khong tai duoc");
+    } else window.alert("Cannot upload this file");
   };
 
   const onButtonClick = () => {
@@ -58,12 +45,6 @@ export const FileUpload = ({
   const emptyInput = () => {
     inputFile.current.value = null;
   };
-
-  const [numPages, setNumPages] = useState(null);
-
-  function onDocumentLoadSuccess({ numPages }) {
-    setNumPages(numPages);
-  }
 
   return (
     <div
@@ -103,8 +84,7 @@ export const FileUpload = ({
         </div>
 
         <div className={`${style["file-upload-notice"]}`}>
-          File must be less than 50MB for PDF and less than 10GB for MP4, MPEG4,
-          MP3, M4A format
+          File must be less than 10MB for PDF format.
         </div>
 
         <input
@@ -127,32 +107,18 @@ export const FileUpload = ({
         {filePreview && (
           <div className={`${style["file-preview"]}`}>
             {fileExt === "pdf" && (
-              <div
-                // href={"/creator/create_episode/preview/document"}
-                className={`${style["preview-container"]}`}
-                // target="_blank"
-              >
-                <div
-                  className={`${style["video-preview"]} ${style["file-img"]}`}
-                >
-                  <img src={"/assets/images/pdf-default.png"}></img>
-                </div>
-                {/* <Document
+              <div className={`${style["preview-container"]}`}>
+                <Document
                   className={`${style["file-img"]}`}
                   file={filePreview}
                   renderMode="svg"
-                  onLoadSuccess={onDocumentLoadSuccess}
-                  
                 >
-                  <div className={`${style["preview-btn"]}`}>
-                    <img src={"/icons/preview.svg"}></img>
-                  </div>
                   <Page
                     pageNumber={1}
                     className={`${style["pdf-canvas"]}`}
                     height={containerRef?.current?.offsetHeight * 0.8}
                   />
-                </Document> */}
+                </Document>
               </div>
             )}
             <div className={`${style["file-name"]}`}>{fileName}</div>

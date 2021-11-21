@@ -90,8 +90,8 @@ const LoginTemplate = (props) => {
     if (!username.match(emailRule) || password.length < 6) {
       setNotification(
         !username.match(emailRule)
-          ? "Hãy nhập email hợp lệ"
-          : "Hãy kiểm tra lại email và mật khẩu"
+          ? "Please check your email"
+          : "Please check your email and password"
       );
       return;
     }
@@ -250,10 +250,10 @@ const LoginTemplate = (props) => {
   return (
     <div className={`${style["container"]}`}>
       <div className={style["login-container"]}>
-        <div className={style["signin-title"]}> Đăng nhập </div>
+        <div className={style["signin-title"]}> Login to BookShare </div>
 
         <div>
-          <label>Địa chỉ email</label>
+          <label>Email address</label>
           <Input
             className={`${input["atn-input-custom"]} ${input["atn-input-login-form"]}  mrb-20px`}
             placeholder="Email Address"
@@ -265,7 +265,7 @@ const LoginTemplate = (props) => {
             onPressEnter={handleLogin}
           />
           <div className={`${style["padding-height"]}`}></div>
-          <label>Mật khẩu</label>
+          <label>Password</label>
           <Input
             className={`${input["atn-input-custom"]} ${input["atn-input-login-form"]}`}
             placeholder="Password"
@@ -286,7 +286,7 @@ const LoginTemplate = (props) => {
               Router.push("/forgot-password");
             }}
           >
-            Quên mật khẩu?
+            Forgot password?
           </Button>
         </div>
 
@@ -298,7 +298,7 @@ const LoginTemplate = (props) => {
               className={style["atn-btn-register"]}
               onClick={() => router.push("/signup")}
             >
-              Tạo tài khoản mới
+              Create new account
             </div>
           </Col>
           <Col className={style["btn-controller-login"]}>
@@ -306,7 +306,7 @@ const LoginTemplate = (props) => {
               className={`${style["atn-btn-login"]} ${style["style.atn-btn-color-orange"]}`}
               onClick={handleLogin}
             >
-              Tiếp
+              Next
             </Button>
           </Col>
         </Row>

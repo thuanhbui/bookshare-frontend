@@ -45,4 +45,18 @@ export default {
         console.log(e);
       });
   },
+  deleteBook: ({ bookId }) => {
+    const _axios = axios.create();
+    return _axios({
+      method: "delete",
+      url: `${API_BASE_URL}/books/${bookId}`,
+      data: {}
+    })
+      .then((data) => {
+        return data;
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }
 };
