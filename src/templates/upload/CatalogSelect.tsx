@@ -5,45 +5,29 @@ import Image from "next/image";
 import CatalogAPI from "src/api/catalog";
 
 export const CatalogSelect = ({
-  firstInit = true,
   setCate,
-  currentCategory = "",
+  isEmpty,
+  setCatalogErrMsg
 }) => {
 
   const [category, setCategory] = useState("");
-
   const [categories, setCategories] = useState([]);
 
-  const chooseCate = (_id, name) => {
+  const chooseCate = (_id) => {
     setCategory(_id);
     setCate(_id);
   };
 
   useEffect(() => {
-    if (currentCategory !== "") {
-      categories.map((cate) => {
-        if (currentCategory === cate._id) {
-          chooseCate(cate._id, cate.name);
-        }
-      });
-    }
-  }, [currentCategory, categories]);
-
-  useEffect(() => {
-    // CategoriesAPI.getAllCategories().then((res) => {
-    //   seCategories(res.categories);
-    //   setSubcates(res.subCategories);
-    // });
     CatalogAPI.getAllCatalog().then((res) => {
       setCategories(res.data);
-    })
+    });
   }, []);
 
   return (
     <div className={`${style["category"]}`}>
-      <div className={`${style["header"]}`}>Category</div>
       <div className={`${style["cate-title"]}`}>
-        Choose 1 of 5 categories below
+        Category
       </div>
 
       <Space size={12} direction="horizontal">
@@ -55,9 +39,8 @@ export const CatalogSelect = ({
                 category === el.catalogId && style["active"]
               }`}
               onClick={() => {
-                if (currentCategory == "") {
-                  chooseCate(el.catalogId, el.nameCatalog);
-                }
+                  chooseCate(el.catalogId);
+                  setCatalogErrMsg(false);
               }}
             >
               <div
@@ -73,7 +56,11 @@ export const CatalogSelect = ({
                 {el.nameCatalog}
                 {category === el.catalogId && (
                   <div className={`${style["checked-icon"]}`}>
-                    <Image src="/assets/icons/checked.svg" width={19} height={19} />
+                    <Image
+                      src="/assets/icons/checked.svg"
+                      width={19}
+                      height={19}
+                    />
                   </div>
                 )}
               </div>
@@ -81,7 +68,7 @@ export const CatalogSelect = ({
           );
         })}
       </Space>
-      {!firstInit && category === "" && (
+      {isEmpty && category === "" && (
         <div className={`${style["error-msg"]}`}>Please choose a category</div>
       )}
     </div>

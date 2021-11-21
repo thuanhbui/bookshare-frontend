@@ -2,23 +2,30 @@ import { FileUpload } from "@components/file-upload/FileUpload";
 import { PhotoUpload } from "@components/file-upload/PhotoUpload";
 import { useRouter } from "next/router";
 import style from "./upload.module.scss";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { CatalogSelect } from "./CatalogSelect";
 import { Form, Input, Radio, Space, Button } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import BookAPI from "src/api/book";
+import { CreateBookModal } from "@components/modal/CreateBookModal";
+import { CancelCreateBookModal } from "@components/modal/CancelCreateBookModal";
 
 const scrollToTop = () => {
   document.body.scrollTop = 0;
   document.documentElement.scrollTop = 0;
 };
 
+const scrollToBody = () => {
+  document.getElementById("book-info").scrollIntoView({ block: "center" });
+};
+
 export const UploadBook = () => {
-  const [catalogId, setCatalogId] = useState("haha");
-  const [fileExt, setFileExt] = useState("xyz");
-  const [coverErrMsg, setCoverErrMsg] = useState("");
-  const [submitClicked, setSubmitClicked] = useState(false);
+  const router = useRouter();
+
+  const [catalogId, setCatalogId] = useState(null);
+  const [catalogErrMsg, setCatalogErrMsg] = useState(false);
   const [modalType, setModalType] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const [episodeThumbnail, setEpisodeThumbnail] = useState({
     thumb: null,
@@ -40,34 +47,23 @@ export const UploadBook = () => {
       content: "",
       isValid: true,
     },
-    type: "editions",
-    numberOfEdition: {
-      num: "",
-      isEmpty: true,
-      isValid: false,
-    },
     file: {
       file: null,
       isEmpty: true,
       errMsg: "",
     },
-    isFree: false,
-    seriesInfo: null,
   });
 
   const validateFile = (size, name) => {
     const lastDot = name.lastIndexOf(".");
     const ext = name.substring(lastDot);
-    const category = uploadContent.seriesInfo?.category;
-    console.log(uploadContent.seriesInfo?.formatAllowed);
-    let extValid = uploadContent.seriesInfo?.formatAllowed.indexOf(ext) !== -1;
-    let sizeValid =
-      size <= (uploadContent.seriesInfo?.sizeAllowed || 100000000);
+    let extValid = ext == ".pdf";
+    let sizeValid = size <= 100000000;
     let checkMsg = "";
     if (!extValid) {
       checkMsg = "Only PDF format are allowed";
     } else if (!sizeValid) {
-      checkMsg = "File must be less than 50MB";
+      checkMsg = "File must be less than 10MB";
     } else checkMsg = "";
     setUploadContent((uploadContent) => ({
       ...uploadContent,
@@ -122,25 +118,21 @@ export const UploadBook = () => {
     validateThumbEmpty();
     validateEpisodeTitle(uploadContent.title.content);
     validateFileEmpty();
+    !catalogId && setCatalogErrMsg(true);
 
     if (
       !uploadContent.title.isEmpty &&
       uploadContent.title.isValid &&
       uploadContent.description.isValid &&
       !episodeThumbnail.isEmpty &&
-      !uploadContent.file.isEmpty
+      !uploadContent.file.isEmpty &&
+      !catalogErrMsg
     ) {
-      if (
-        uploadContent.type === "0" ||
-        (!uploadContent.numberOfEdition.isEmpty &&
-          uploadContent.numberOfEdition.isValid)
-      ) {
-        setModalType("nft-confirm");
-      } else console.log("validate error 3");
+      setModalType("confirm");
     } else {
       console.log("validate error 4");
+      scrollToBody();
     }
-    setSubmitClicked(false);
   };
 
   const episodeTitleChange = (e) => {
@@ -251,7 +243,7 @@ export const UploadBook = () => {
 
   const packageForm = (content, image, catalogId) => {
     const form = new FormData();
-    // form.append("image", episodeThumbnail.thumb.pictureAsFile);
+
     form.append("imgMulti", image);
     form.append("catalogId", catalogId);
     form.append("title", content.title.content);
@@ -262,77 +254,24 @@ export const UploadBook = () => {
   };
 
   const Upload = async () => {
+    setIsLoading(true);
 
-    const formData = packageForm(
-      uploadContent,
-      episodeThumbnail.thumb.pictureAsFile,
-      catalogId
-    );
-
-    BookAPI.uploadBook({ formdata: formData }).then((res) => {
-      console.log(res);
-    });
-
-    // setVisible(true);
-    // setTimeout(() => {
-    //   if (!isPending) {
-    //     setIsPending(true);
-    //   }
-    // }, 10000);
-    // const category = uploadContent.seriesInfo?.category;
-    // const uploadSingleFile = (data): Promise<any> =>
-    //   new Promise((res, rej) => {
-    //     const form = new FormData();
-    //     if (!data) {
-    //       rej("Errorrr");
-    //     }
-    //     form.append("file", data);
-    //     SeriesAPI.uploadFile({
-    //       formdata: form,
-    //       userInfo: GetUserInfo(),
-    //     })
-    //       .then(({ key, location, pageNumber }) => {
-    //         res({ key, location, pageNumber });
-    //       })
-    //       .catch(rej);
-    //   });
-
-    // const upload = await Promise.all([
-    //   uploadSingleFile(episodeThumbnail.thumb.pictureAsFile),
-    //   uploadSingleFile(uploadContent.file.file.file),
-    //   category === "Music & Video" &&
-    //     uploadSingleFile(videoThumbnail.thumb.pictureAsFile),
-    // ]);
-
-    // const formdata = {
-    //   title: uploadContent.title.content,
-    //   isFree: uploadContent.type === "0" ? true : false,
-    //   editions: uploadContent.numberOfEdition.num,
-    //   key: upload[1].key,
-    //   thumbnail: upload[0].location,
-    //   pageNumber: upload[1].pageNumber,
-    //   serieId: serie,
-    //   description: uploadContent.description.content,
-    //   thumbnailVideo: upload[2].location,
-    // };
-
-    // EpisodesAPI.createEpisode({
-    //   body: formdata,
-    //   userInfo: GetUserInfo(),
-    // })
-    //   .then((res) => {
-    //     setLoading(false);
-    //     if (res.status === "pending") {
-    //       if (!isPending) {
-    //         setIsPending(true);
-    //       }
-    //     } else setVisible(false);
-    //   })
-    //   .catch((err) => {
-    //     setVisible(false);
-    //     notifyError(err);
-    //     setLoading(false);
-    //   });
+    setTimeout(() => {
+      const formData = packageForm(
+        uploadContent,
+        episodeThumbnail.thumb.pictureAsFile,
+        catalogId
+      );
+      BookAPI.uploadBook({ formdata: formData })
+        .then((res) => {
+          setIsLoading(false);
+          setModalType("");
+          router.push(`/item?itemId=${res?.data.bookId}`);
+        })
+        .catch((err) => {
+          setIsLoading(false);
+        });
+    }, 2000);
   };
 
   return (
@@ -420,64 +359,72 @@ export const UploadBook = () => {
             </ul>
           </div>
         </section>
-        <section>
-          <CatalogSelect setCate={setCatalogId} />
+        <section className={`${style["select-episode-thumb"]}`}>
+          <div className={`${style["serie-detail-header"]}`} id="book-info">
+            Book Information
+          </div>
+          <CatalogSelect
+            setCate={setCatalogId}
+            isEmpty={catalogErrMsg}
+            setCatalogErrMsg={setCatalogErrMsg}
+          />
+          <Form layout="vertical">
+            <Form.Item label="Book title" style={{ width: "48%" }}>
+              <div
+                className={`${
+                  uploadContent.title.isEmpty || !uploadContent.title.isValid
+                    ? "error-border"
+                    : ""
+                }`}
+              >
+                <Input
+                  placeholder="Max 60 characters"
+                  value={uploadContent.title.content}
+                  onChange={episodeTitleChange}
+                />
+              </div>
+              {uploadContent.title.isEmpty ? (
+                <div className={`${style["error-msg-input"]}`}>
+                  Please input item title
+                </div>
+              ) : (
+                <>
+                  {!uploadContent.title.isValid && (
+                    <div className={`${style["error-msg-input"]}`}>
+                      Maximum 60 characters
+                    </div>
+                  )}
+                </>
+              )}
+            </Form.Item>
+            <Form.Item
+              style={{
+                width: "48%",
+              }}
+              label="Book description (optional)"
+            >
+              <div
+                className={`${
+                  !uploadContent.description.isValid ? "error-border" : ""
+                }`}
+              >
+                <TextArea
+                  placeholder="Item description (optional)"
+                  autoSize={{ minRows: 4, maxRows: 5 }}
+                  name="summary"
+                  value={uploadContent.description.content}
+                  onChange={descriptionChange}
+                />
+              </div>
+              {!uploadContent.description.isValid && (
+                <div className={`${style["error-msg-input"]}`}>
+                  Maximum 500 characters
+                </div>
+              )}
+            </Form.Item>
+          </Form>
         </section>
-        <Form layout="vertical">
-          <Form.Item label="Book Title" style={{ width: "48%" }}>
-            <div
-              className={`${
-                uploadContent.title.isEmpty || !uploadContent.title.isValid
-                  ? "error-border"
-                  : ""
-              }`}
-            >
-              <Input
-                placeholder="Max 60 characters"
-                value={uploadContent.title.content}
-                onChange={episodeTitleChange}
-              />
-            </div>
-            {uploadContent.title.isEmpty ? (
-              <div className={`${style["error-msg-input"]}`}>
-                Please input item title
-              </div>
-            ) : (
-              <>
-                {!uploadContent.title.isValid && (
-                  <div className={`${style["error-msg-input"]}`}>
-                    Maximum 60 characters
-                  </div>
-                )}
-              </>
-            )}
-          </Form.Item>
-          <Form.Item
-            style={{
-              width: "48%",
-            }}
-            label="Item description (optional)"
-          >
-            <div
-              className={`${
-                !uploadContent.description.isValid ? "error-border" : ""
-              }`}
-            >
-              <TextArea
-                placeholder="Item description (optional)"
-                autoSize={{ minRows: 4, maxRows: 5 }}
-                name="summary"
-                value={uploadContent.description.content}
-                onChange={descriptionChange}
-              />
-            </div>
-            {!uploadContent.description.isValid && (
-              <div className={`${style["error-msg-input"]}`}>
-                Maximum 500 characters
-              </div>
-            )}
-          </Form.Item>
-        </Form>
+
         <section className={`${style["upload-episode"]}`}>
           <div
             className={`${style["episode-option-header"]} ${style["episode-option"]}`}
@@ -519,18 +466,14 @@ export const UploadBook = () => {
                 }
               }
             }}
-            setCoverType={setFileExt}
             errorMsg={uploadContent.file.errMsg}
-            setCoverErrMsg={(errMsg) => {
-              setCoverErrMsg(errMsg);
-            }}
           />
         </section>
         <div className={`${style["custom-serie-btn"]}`}>
           <Button
             className={`${style["button"]} ${style["cancel-button"]}`}
             onClick={() => {
-              setModalType("cancel-nft");
+              setModalType("cancel");
             }}
           >
             Cancel
@@ -539,17 +482,27 @@ export const UploadBook = () => {
           <Button
             className={`${style["button"]} ${style["active-save"]} ${style["confirm-button"]}`}
             onClick={() => {
-              console.log(uploadContent);
-              setSubmitClicked(true);
               if (episodeThumbnail.errMsg !== "") {
                 scrollToTop();
-              } else Upload();
+              } else {
+                validateAll();
+              }
             }}
             disabled={uploadContent.file.isEmpty}
           >
             Create
           </Button>
         </div>
+        {modalType === "confirm" && (
+          <CreateBookModal
+            updateModalVisible={setModalType}
+            upLoad={Upload}
+            isLoading={isLoading}
+          />
+        )}
+        {modalType === "cancel" && (
+          <CancelCreateBookModal updateModalVisible={setModalType} />
+        )}
       </div>
     </>
   );

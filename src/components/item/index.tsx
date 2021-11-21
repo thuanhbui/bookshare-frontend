@@ -1,17 +1,26 @@
 import style from "./item.module.scss";
 import React, { useEffect, useState } from "react";
-import { HeartFilled, HeartOutlined } from "@ant-design/icons";
+import {
+  HeartFilled,
+  HeartOutlined,
+  EditFilled,
+  CloseOutlined,
+} from "@ant-design/icons";
 import { Tooltip } from "antd";
 import { useRouter } from "next/router";
-import BookAPI from "src/api/book"
+import BookAPI from "src/api/book";
 
-export const ItemComponent = ({ id = "", classNames = "" }) => {
+export const ItemComponent = ({
+  id = "",
+  classNames = "",
+  setModalType = null,
+  setDeleteBookId = null,
+}) => {
   const router = useRouter();
 
   const [isLogged, setIsLogged] = useState(false);
 
   const [data, setData] = useState(null);
-  
   const [favorite, setFavorite] = useState(data?.isFavorited);
 
   const convertLongString = (
@@ -30,20 +39,25 @@ export const ItemComponent = ({ id = "", classNames = "" }) => {
   useEffect(() => {
     setData({
       thumbnailSrc: "/mockup/item.jpg",
-      serieName: 'This name',
+      serieName: "This name",
       isFavorited: true,
     });
 
-    BookAPI.getInfo(id).then((res) => {
-      setData({...data,thumbnailSrc: "http://localhost:9001" + res?.data?.imageLink, serieName: res?.data?.title});
-    }).catch((err) => {
-      console.log(err);
-    })
-
+    BookAPI.getInfo(id)
+      .then((res) => {
+        setData({
+          ...data,
+          thumbnailSrc: "http://localhost:9001" + res?.data?.imageLink,
+          serieName: res?.data?.title,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
   const onClickFavorite = () => {
-      setFavorite(!favorite);
+    setFavorite(!favorite);
     //call api to handle
   };
 
@@ -54,6 +68,22 @@ export const ItemComponent = ({ id = "", classNames = "" }) => {
   return (
     <>
       <div className={`${style["serie-component"]} ${style[classNames]}`}>
+        {router.pathname === "/bookshelf" && (
+          <>
+            <span className={`${style["edit-btn"]}`}>
+              <EditFilled className={`${style["par-icon"]}`} />
+            </span>
+            <span
+              className={`${style["close-btn"]}`}
+              onClick={() => {
+                setModalType("deleteBook");
+                setDeleteBookId(id);
+              }}
+            >
+              <CloseOutlined className={`${style["par-icon"]}`} />
+            </span>
+          </>
+        )}
         <div className={`${style["cursor_pointer"]}`}>
           <img
             src={data?.thumbnailSrc}
