@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { Header } from "@components/header";
-import TestApi from "../../api/test";
+import TestApi from "src/api/test";
 import { BookShelf } from "@components/bookshelf";
 import { SubHeader } from "@components/sub-header";
 

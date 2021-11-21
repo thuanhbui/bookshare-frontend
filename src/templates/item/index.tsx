@@ -7,7 +7,7 @@ import Slider from "react-slick";
 import CustomImageField from "../../components/image";
 import Share from "../../components/share";
 import { HeartFilled, HeartOutlined } from "@ant-design/icons";
-import BookAPI from "../../api/book";
+import BookAPI from "src/api/book";
 
 const EpisodeTemplate = ({ bookId }) => {
 

@@ -64,9 +64,8 @@ $lh11: 16px;
 $lh12: 17px;
 $lh9: 19px;
 
-
-$primary-color: #61B3FF;
-$color-light-main: #D0E8FF;
+$primary-color: #61b3ff;
+$color-light-main: #d0e8ff;
 $color-light-green: #d0e3bb;
 $color-lighter-green: #fbfdf7;
 $color-line: #e4e4e4;
@@ -90,7 +89,7 @@ $color-blue-12: #65b7f1;
 $color-black: #000000;
 $color-light-black: #080a0b;
 $color-black-1: #1e2024;
-$color-black-4: #1D1F22;
+$color-black-4: #1d1f22;
 $color-black-3: #e4e4e4;
 $color-lighter-black: #1c1d22;
 
@@ -98,7 +97,6 @@ $color-bold-white: #f7f8fc;
 $color-white: #ffffff;
 $color-white-2: #f0f2f8;
 $color-bolder-white: #ffeee2;
-
 
 $color-bg: #7d818b;
 $color-gray: #999999;
@@ -115,6 +113,8 @@ $color-gray-disable: #919eab;
 $color-gray-11: #c4c4c4;
 $color-gray-12: #eeefef;
 $color-gray-13: #dcdcdc;
+$color-gray-14: #fbfbfb;
+$color-gray-15: #cfd5e3;
 
 $color-red: #d13434;
 $color-red-1: #e86969;
@@ -128,4 +128,3 @@ $base-size: 16px;
 @function rem($size, $context: $base-size) {
   @return math.div($size, $base-size) * 1rem;
 }
-
