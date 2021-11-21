@@ -14,7 +14,7 @@ const scrollToTop = () => {
 };
 
 export const UploadBook = () => {
-  const [cate, setCate] = useState("haha");
+  const [catalogId, setCatalogId] = useState("haha");
   const [fileExt, setFileExt] = useState("xyz");
   const [coverErrMsg, setCoverErrMsg] = useState("");
   const [submitClicked, setSubmitClicked] = useState(false);
@@ -249,11 +249,11 @@ export const UploadBook = () => {
       }
     });
 
-  const packageForm = (content, image, cate) => {
+  const packageForm = (content, image, catalogId) => {
     const form = new FormData();
     // form.append("image", episodeThumbnail.thumb.pictureAsFile);
     form.append("imgMulti", image);
-    form.append("catalogId", "1");
+    form.append("catalogId", catalogId);
     form.append("title", content.title.content);
     form.append("description", content.description.content);
     form.append("fileMulti", content.file.file.file);
@@ -266,7 +266,7 @@ export const UploadBook = () => {
     const formData = packageForm(
       uploadContent,
       episodeThumbnail.thumb.pictureAsFile,
-      cate
+      catalogId
     );
 
     BookAPI.uploadBook({ formdata: formData }).then((res) => {
@@ -421,7 +421,7 @@ export const UploadBook = () => {
           </div>
         </section>
         <section>
-          <CatalogSelect setCate={setCate} />
+          <CatalogSelect setCate={setCatalogId} />
         </section>
         <Form layout="vertical">
           <Form.Item label="Book Title" style={{ width: "48%" }}>

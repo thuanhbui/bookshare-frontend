@@ -16,7 +16,7 @@ export const CatalogSelect = ({
 
   const chooseCate = (_id, name) => {
     setCategory(_id);
-    setCate(name);
+    setCate(_id);
   };
 
   useEffect(() => {
