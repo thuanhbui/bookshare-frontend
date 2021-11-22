@@ -6,6 +6,7 @@ import { SubHeader } from "@components/sub-header";
 import { TopHotBooks } from "@components/top-page/TopHotBooks";
 import { TopByCatalog } from "@components/top-page/TopByCatalog";
 import CatalogAPI from "src/api/catalog";
+import { Footer } from "@components/footer";
 
 const Home: React.FC<{ homepageContent: any }> = () => {
   const [selectedCate, setSelectedCate] = useState("all");
@@ -29,6 +30,7 @@ const Home: React.FC<{ homepageContent: any }> = () => {
       {categories.map((catalog, index) => {
         return <TopByCatalog catalogName={catalog.nameCatalog.toUpperCase()} />;
       })}
+      <Footer/>
     </div>
   );
 };
