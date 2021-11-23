@@ -55,12 +55,13 @@ export const ItemComponent = ({
 
     BookAPI.getInfo({ bookId: id, userInfo: GetUserInfo() })
       .then((res) => {
+        console.log(res.data);
         setData({
           ...data,
           thumbnailSrc: "http://localhost:9001" + res?.data?.imageLink,
           serieName: res?.data?.title,
         });
-        setFavorite(res?.data.like);
+        setFavorite(res?.data.checkLike);
       })
       .catch((err) => {
         console.log(err);

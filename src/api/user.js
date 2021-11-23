@@ -67,4 +67,13 @@ export default {
       return data;
     });
   },
+  getLikedBooks: ({userInfo}) => {
+    const _axios = axios.create();
+    return _axios({
+      method: "get",
+      url: `${API_BASE_URL}/books/liked?userId=${userInfo.userid}`,
+    }).then((data) => {
+      return data;
+    });
+  }
 };

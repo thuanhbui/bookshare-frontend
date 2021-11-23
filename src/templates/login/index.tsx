@@ -29,15 +29,6 @@ const LoginTemplate = (props) => {
 
   const handleLogin = () => {
     let username = userName.trim();
-    // if (!username.match(emailRule) || password.length < 6) {
-    //   setNotification(
-    //     !username.match(emailRule)
-    //       ? "Please check your email"
-    //       : "Please check your email and password"
-    //   );
-    //   return;
-    // }
-
     let userInfo = {
       username: username,
       password: password,
@@ -48,7 +39,10 @@ const LoginTemplate = (props) => {
         const userInfo = res?.data;
         window.localStorage.setItem("userInfo", JSON.stringify(userInfo));
         const path = window.localStorage.getItem("routeFromLoginModal");
-        path !== "" ? router.push(path) : router.push("/");
+        window.localStorage.removeItem("routeFromLoginModal");
+        if (path) {
+          router.push(path);
+        } else router.push("/");
       })
       .catch((err) => {
         console.log(err);

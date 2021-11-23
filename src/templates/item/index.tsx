@@ -1,42 +1,61 @@
 import { useRouter } from "next/router";
-import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState, useEffect } from "react";
 import style from "./item.module.scss";
 import { Col, Row, Skeleton, Button } from "antd";
-import Slider from "react-slick";
 import CustomImageField from "../../components/image";
 import Share from "../../components/share";
 import { HeartFilled, HeartOutlined } from "@ant-design/icons";
 import BookAPI from "src/api/book";
 import { GetUserInfo } from "src/api/common";
+import { RequireLoginModal } from "@components/require-modal";
 
 const EpisodeTemplate = ({ bookId }) => {
   const router = useRouter();
-  const [shareModal, setShareModal] = useState(false);
   const [favorite, setFavorite] = useState(false);
   const [amountInCart, setAmountInCart] = useState(0);
   const [bookInfo, setBookInfo] = useState<any>({});
   const [episodeTotalLikes, setTotalLikes] = useState(0);
   const [isLogged, setIsLogged] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-  const [addedToBookshelf, setAddedToBookshelf] = useState(false);
 
-  const moveToSeriePage = () => {
-    const pathname = "/serie/" + bookId;
+  const moveToUserPage = () => {
+    const pathname = "/user-page/" + bookInfo?.userName;
     router.push(pathname);
   };
 
-  const onClickFavorite = () => {};
+  const onClickFavorite = () => {
+    if (isLogged) {
+      setFavorite(!favorite);
+      BookAPI.toggleLike({ userInfo: GetUserInfo(), bookId: bookId })
+        .then((res) => {          
+          setTotalLikes(res?.data.like === 0 ? episodeTotalLikes - 1 : episodeTotalLikes + 1);
+        })
+        .catch((err) => console.log(err));
+    } else {
+      setModalVisible(true);
+    }
+  };
 
   useEffect(() => {
     fetchData();
   }, [bookId]);
+
+  useEffect(() => {
+    const userInfo = GetUserInfo();
+    if (userInfo?.role === "USER") {
+      setIsLogged(true);
+    } else {
+      setIsLogged(false);
+    }
+  }, []);
 
   const fetchData = () => {
     if (bookId) {
       BookAPI.getInfo({ bookId: bookId, userInfo: GetUserInfo() }).then(
         (res) => {
           setBookInfo(res.data);
+          setFavorite(res?.data.checkLike);
+          setTotalLikes(res?.data.likes);
           console.log(res.data);
         }
       );
@@ -85,7 +104,7 @@ const EpisodeTemplate = ({ bookId }) => {
               >
                 <h3
                   className={`${style["series-link"]} ${style["cursor_pointer"]}`}
-                  onClick={moveToSeriePage}
+                  onClick={moveToUserPage}
                 >
                   {bookInfo?.userName}
                 </h3>
@@ -106,8 +125,7 @@ const EpisodeTemplate = ({ bookId }) => {
                   />
                 )}
               </span>
-              <span className={style["likes"]}> {bookInfo?.likes} </span>
-
+              <span className={style["likes"]}> {episodeTotalLikes} </span>
               <span>
                 <img
                   src={"/assets/icons/separate-line.svg"}
@@ -145,6 +163,7 @@ const EpisodeTemplate = ({ bookId }) => {
                     }
                     disabled={amountInCart > 0}
                     onClick={() => handleDownload()}
+                    download={`${bookInfo?.title}`}
                   >
                     Download
                   </Button>
@@ -153,8 +172,8 @@ const EpisodeTemplate = ({ bookId }) => {
                 <Col span={11}>
                   <Button
                     className={`${style["available"]} ${style["btn-buy-now"]}`}
-                    href={bookInfo?.fileLink}
                     target="_blank"
+                    href={`http://localhost:9001${bookInfo?.fileLink}`}
                   >
                     Enjoy
                   </Button>
@@ -168,19 +187,19 @@ const EpisodeTemplate = ({ bookId }) => {
         <Col xs={24} className={`${style["description"]}`}>
           <Skeleton
             active
-            loading={bookInfo?.description !== "" && !bookInfo?.description}
+            loading={bookInfo?.description === "" && bookInfo?.description !== null}
           >
             <p>{bookInfo?.description}</p>
           </Skeleton>
         </Col>
       </Row>
 
-      {/* {modalVisible && (
-          <RequireLoginModal
-            updateModalVisible={() => setModalVisible(false)}
-            isFrom={router.asPath}
-          />
-        )} */}
+      {modalVisible && (
+        <RequireLoginModal
+          updateModalVisible={() => setModalVisible(false)}
+          isFrom={router.asPath}
+        />
+      )}
     </div>
   );
 };
