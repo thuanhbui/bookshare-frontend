@@ -37,7 +37,7 @@ export const Header = () => {
   const UserDropdownMenu = () => {
     return (
       <Menu className={`${style["dropdown-menu"]}`}>
-        <Menu.Item>Account</Menu.Item>
+        <Menu.Item onClick={() => router.push("/account")}>Account</Menu.Item>
         <Menu.Item>My Books</Menu.Item>
         <Menu.Item onClick={handleLogout}>Log out</Menu.Item>
       </Menu>

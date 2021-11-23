@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { NewReleaseTemplate } from "src/templates/new-release";
 import { Header } from "../../components/header";
 
-const SeeAllPage = () => {
+const NewReleasePage = () => {
   
   const router = useRouter();
   const [param, setParam] = useState({ catalogId: null });
@@ -38,4 +38,4 @@ const SeeAllPage = () => {
   );
 };
 
-export default SeeAllPage;
+export default NewReleasePage;
