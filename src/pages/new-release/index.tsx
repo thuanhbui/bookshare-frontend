@@ -18,12 +18,6 @@ const NewReleasePage = () => {
       });
   }, [router.query]);
 
-  useEffect(() => {
-    router.push({
-      query: { catalog },
-    });
-  }, [catalog])
-
   return (
     <React.Fragment>
       <Header />
@@ -32,7 +26,7 @@ const NewReleasePage = () => {
         setSelectedCate={setCatalog}
       />
       <div style={{ height: 50 }}></div>
-      <NewReleaseTemplate selectedCate={param.catalogId} />
+      <NewReleaseTemplate selectedCate={catalog} />
     </React.Fragment>
   );
 };

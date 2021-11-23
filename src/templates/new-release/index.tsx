@@ -21,20 +21,31 @@ export const NewReleaseTemplate = ({ selectedCate }) => {
   const [modalType, setModalType] = useState("");
   const [deleteBookId, setDeleteBookId] = useState("");
 
+  const [param, setParam] = useState({ search: null });
+
   useEffect(() => {
     router.isReady && setCategory(router.query.category);
   }, [router]);
 
   useEffect(() => {
     featDataListProducts(selectedCate);
-  }, [category, page, selectedCate, itemsPerPage]);
+  }, [category, page, selectedCate, itemsPerPage, param.search]);
+
+  useEffect(() => {
+    router.query &&
+      setParam({
+        search: router.query.search,
+      });
+  }, [router.query]);
 
   const featDataListProducts = (selectedCate) => {
     setIsLoading(true);
 
+    const catalogId = selectedCate ? selectedCate !== "all" ? selectedCate : "" : "";
+    
     BookAPI.getNewReleaseBooks({
-      catalogId: "",
-      search: "",
+      catalogId: catalogId,
+      search: param.search ? param.search : "",
     })
       .then((res) => {
         setDataListProducts(

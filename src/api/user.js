@@ -70,6 +70,7 @@ export default {
       method: "get",
       url: `${API_BASE_URL}/books/liked?userId=${userInfo.userid}`,
     }).then((data) => {
+      console.log(data);
       return data;
     });
   },

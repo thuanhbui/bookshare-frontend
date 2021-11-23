@@ -21,9 +21,19 @@ export const SeeAllTemplate = ({ selectedCate }) => {
   const [modalType, setModalType] = useState("");
   const [deleteBookId, setDeleteBookId] = useState("");
 
+  const [param, setParam] = useState({ search: null });
+
   useEffect(() => {
     router.isReady && setCategory(router.query.category);
   }, [router]);
+
+  useEffect(() => {
+    router.query &&
+      setParam({
+        search: router.query.search,
+      });
+  }, [router.query]);
+
 
   useEffect(() => {
     featDataListProducts(selectedCate);
@@ -33,9 +43,11 @@ export const SeeAllTemplate = ({ selectedCate }) => {
 
     setIsLoading(true);
 
+    const catalogId = selectedCate ? selectedCate !== "all" ? selectedCate : "" : "";
+
     BookAPI.getHotBooksByCatalog({
-      catalogId: selectedCate,
-      search: "",
+      catalogId: catalogId,
+      search: param.search ? param.search : "",
     })
       .then((res) => {
         setDataListProducts(res?.data.slice((page - 1) * itemsPerPage, page * itemsPerPage));

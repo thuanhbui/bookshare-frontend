@@ -17,11 +17,11 @@ const SeeAllPage = () => {
       });
   }, [router.query]);
 
-  useEffect(() => {
-    router.push({
-      query: { catalog },
-    });
-  }, [catalog])
+  // useEffect(() => {
+  //   router.push({
+  //     query: { catalog },
+  //   });
+  // }, [catalog])
 
   return (
     <React.Fragment>
@@ -31,7 +31,7 @@ const SeeAllPage = () => {
         setSelectedCate={setCatalog}
       />
       <div style={{ height: 50 }}></div>
-      <SeeAllTemplate selectedCate={param.catalogId} />
+      <SeeAllTemplate selectedCate={catalog} />
     </React.Fragment>
   );
 };

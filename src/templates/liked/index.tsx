@@ -9,7 +9,7 @@ import BookAPI from "src/api/book";
 import { DeleteBookModal } from "@components/modal/DeleteBookModal";
 import { GetUserInfo } from "src/api/common";
 
-export const LikedTemplate = ({ selectedCate }) => {
+export const LikedTemplate = ({  }) => {
   const router = useRouter();
 
   const [totalProduct, setTotalProduct] = useState(0);
@@ -21,8 +21,6 @@ export const LikedTemplate = ({ selectedCate }) => {
   const [deleteBookId, setDeleteBookId] = useState("");
   const [isLogged, setIsLogged] = useState(false);
 
-  const [param, setParam] = useState({ search: null });
-
   useEffect(() => {
     const userInfo = GetUserInfo();
     if (userInfo?.role !== "USER" || !userInfo) {
@@ -30,38 +28,24 @@ export const LikedTemplate = ({ selectedCate }) => {
       router.push("/login");
     } else {
       setIsLogged(true);
+      featDataListProducts(1);
     }
   }, []);
 
   useEffect(() => {
     setPage(1);
-    isLogged && featDataListProducts(selectedCate, param.search, 1);
-  }, [selectedCate, itemsPerPage, param.search]);
+    isLogged && featDataListProducts(1);
+  }, [itemsPerPage]);
 
   useEffect(() => {
-    isLogged && featDataListProducts(selectedCate, param.search, page);
+    isLogged && featDataListProducts(page);
   }, [page])
 
-  useEffect(() => {
-    router.query &&
-      setParam({
-        search: router.query.search,
-      });
-  }, [router.query]);
-
-  const featDataListProducts = (selectedCate, search, page) => {
+  const featDataListProducts = (page) => {
     setIsLoading(true);
-    
-    const catalogId =
-      selectedCate !== "all"
-        ? selectedCate
-        : "";
-    const searchKey = search ? search : "";
 
     UserAPI.getLikedBooks({
-      userInfo: GetUserInfo(),
-      // catalogId: catalogId,
-      // search: searchKey,
+      userInfo: GetUserInfo()
     })
       .then((res) => {
         setDataListProducts(
