@@ -26,8 +26,12 @@ export const BookShelf = ({ selectedCate }) => {
   useEffect(() => {
     const userInfo = GetUserInfo();
     if (userInfo?.role !== "USER" || !userInfo) {
-      window.localStorage.setItem("routeFromLoginModal", router.asPath);
-      router.push("/login");
+      if (userInfo?.role === "ADMIN") {
+        router.push("/admin/homepage");
+      } else {
+        window.localStorage.setItem("routeFromLoginModal", router.asPath);
+        router.push("/login");
+      }
     } else {
       setIsLogged(true);
     }

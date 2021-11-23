@@ -8,6 +8,7 @@ import { SeeMoreNoResult } from "@components/no-result";
 import BookAPI from "src/api/book";
 import { CatalogMappingId } from "src/constant/index";
 import { RequireLoginModal } from "@components/require-modal";
+import { GetUserInfo } from "src/api/common";
 
 export const TopByCatalog = ({
   category = "all",
@@ -33,6 +34,8 @@ export const TopByCatalog = ({
 
     BookAPI.getHotBooksByCatalog({
       catalogId: CatalogMappingId[`${catalogName}`],
+      userInfo: GetUserInfo(),
+      search: "",
     }).then((res) => {
       setData(res?.data);
       setTotal(res?.data.length);

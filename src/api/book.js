@@ -23,12 +23,20 @@ export default {
       return data;
     });
   },
-  getHotBooksByCatalog: ({ catalogId }) => {
+  getHotBooksByCatalog: ({userInfo, catalogId, search }) => {
+    // const _axios = axios.create();
+    // return _axios({
+    //   method: "get",
+    //   url: `${API_BASE_URL}/books/top10/${catalogId}`,
+    // }).then((data) => {
+    //   return data;
+    // });
     const _axios = axios.create();
     return _axios({
       method: "get",
-      url: `${API_BASE_URL}/books/top10/${catalogId}`,
+      url: `${API_BASE_URL}/books/ofUser?userId=${userInfo.userid}&catalogId=${catalogId}&search=${search}`,
     }).then((data) => {
+      console.log(data.data);
       return data;
     });
   },
