@@ -5,12 +5,13 @@ const axios = require("axios");
 export default {
   login: ({ userInfo }) => {
     const _axios = axios.create();
-
+    console.log("login");
     return _axios({
       method: "post",
       url: `${API_BASE_URL}/login`,
       data: userInfo,
     }).then((data) => {
+      console.log(data);
       return data;
     });
   },

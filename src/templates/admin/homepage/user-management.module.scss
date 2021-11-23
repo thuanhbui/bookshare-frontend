@@ -1,0 +1,54 @@
+@import "@components/global-scss/variables";
+
+.container {
+  margin: 0 30px;
+  .title {
+    padding-top: 60px;
+    padding-bottom: 20px;
+    font-weight: bold;
+  }
+
+  .search-bar {
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
+
+  .field-name {
+    margin-bottom: 20px;
+  }
+}
+
+// .date-container {
+//   // margin: 0 30px;
+// }
+
+.pending-request {
+  margin-left: 100px;
+}
+
+.date-picker {
+  margin-left: 10px !important;
+  margin-right: 10px !important;
+}
+
+.btn {
+  margin-left: 10%;
+  background-color: #ebebeb;
+  border: 1px solid black;
+}
+
+.link {
+  text-decoration: underline;
+  cursor: pointer;
+  color: $color-blue;
+  user-select: none;
+}
+
+@media screen and (max-width: rem(1190px)) {
+  .btn {
+    margin-top: 20px;
+    margin-left: 10%;
+    background-color: #ebebeb;
+    border: 1px solid black;
+  }
+}

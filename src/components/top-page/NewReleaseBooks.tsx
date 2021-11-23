@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { ItemComponent } from "@components/item";
 import { SeeMoreNoResult } from "@components/no-result";
 import BookAPI from "src/api/book";
+import { RequireLoginModal } from "@components/require-modal";
 
 export const NewReleaseBooks = ({ category = "all", search = "" }) => {
 
@@ -16,6 +17,7 @@ export const NewReleaseBooks = ({ category = "all", search = "" }) => {
     typeof window !== "undefined" && window.innerWidth
   );
   const [firstInit, setFirstInit] = useState(true);
+  const [modalType, setModalType] = useState("");
 
   const router = useRouter();
 
@@ -136,7 +138,7 @@ export const NewReleaseBooks = ({ category = "all", search = "" }) => {
           onScroll={onHorizontalScroll}
         >
           {data?.map((book, index) => (
-            <ItemComponent id={book.bookId} classNames={`${index > 0 ? "ml-16" : ""}`} />
+            <ItemComponent id={book.bookId} classNames={`${index > 0 ? "ml-16" : ""}`} setModalType={setModalType}/>
           ))}
         </div>
         {data && total > 0 && arrowVisible && (
@@ -146,7 +148,11 @@ export const NewReleaseBooks = ({ category = "all", search = "" }) => {
             onClick={() => moveRight()}
           />
         )}
+        {modalType === "require-login" && (
+          <RequireLoginModal isFrom={router.asPath} updateModalVisible={setModalType}/>
+        )}
       </div>
+      
     </>
   );
 };

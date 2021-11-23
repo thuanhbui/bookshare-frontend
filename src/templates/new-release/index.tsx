@@ -7,6 +7,7 @@ import { ItemComponent } from "@components/item";
 import BookAPI from "src/api/book";
 import { DeleteBookModal } from "@components/modal/DeleteBookModal";
 import { CatalogMappingName } from "src/constant/index";
+import { RequireLoginModal } from "@components/require-modal";
 
 export const NewReleaseTemplate = ({ selectedCate }) => {
   const router = useRouter();
@@ -86,6 +87,9 @@ export const NewReleaseTemplate = ({ selectedCate }) => {
           updateModalVisible={setModalType}
           deleteBook={handleDeleteBook}
         />
+      )}
+      {modalType === "require-login" && (
+        <RequireLoginModal isFrom={router.asPath} updateModalVisible={setModalType}/>
       )}
     </div>
   );

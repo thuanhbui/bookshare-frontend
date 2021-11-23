@@ -47,7 +47,8 @@ const LoginTemplate = (props) => {
       .then((res) => {
         const userInfo = res?.data;
         window.localStorage.setItem("userInfo", JSON.stringify(userInfo));
-        router.push("/");
+        const path = window.localStorage.getItem("routeFromLoginModal");
+        path !== "" ? router.push(path) : router.push("/");
       })
       .catch((err) => {
         console.log(err);

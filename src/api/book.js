@@ -7,7 +7,7 @@ export default {
     const _axios = axios.create();
     return _axios({
       method: "get",
-      url: `${API_BASE_URL}/books/${bookId}?userId=${userInfo?.userid}`,
+      url: `${API_BASE_URL}/books/${bookId}?userId=${userInfo?.userid ? userid : ""}`,
     }).then((data) => {
       return data;
     });
