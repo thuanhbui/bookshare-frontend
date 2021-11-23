@@ -6,7 +6,6 @@ import { EditUsernameModal } from "@components/account-modal/EditUserName";
 import { GetUserInfo } from "src/api/common";
 import { useRouter } from "next/router";
 export const AccountTemplate = () => {
-
   const router = useRouter();
 
   const [profile, setProfile] = useState({
@@ -21,11 +20,14 @@ export const AccountTemplate = () => {
   useEffect(() => {
     const userInfo = GetUserInfo();
     if (userInfo) {
-      setProfile({
-        ...profile,
-        email: userInfo?.email,
-        displayName: userInfo?.username,
-      });
+      if (userInfo.role === "ADMIN") {
+        router.push("/admin/homepage");
+      } else
+        setProfile({
+          ...profile,
+          email: userInfo?.email,
+          displayName: userInfo?.username,
+        });
     } else {
       window.localStorage.setItem("routeFromLoginModal", router.asPath);
       router.push("/login");

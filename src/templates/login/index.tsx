@@ -40,9 +40,12 @@ const LoginTemplate = (props) => {
         window.localStorage.setItem("userInfo", JSON.stringify(userInfo));
         const path = window.localStorage.getItem("routeFromLoginModal");
         window.localStorage.removeItem("routeFromLoginModal");
-        if (path) {
-          router.push(path);
-        } else router.push("/");
+
+        if (userInfo.role === "USER") {
+          if (path) {
+            router.push(path);
+          } else router.push("/");
+        } else router.push("/admin/homepage");
       })
       .catch((err) => {
         console.log(err);

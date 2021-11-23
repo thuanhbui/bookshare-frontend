@@ -18,8 +18,6 @@ const UploadPage = (props) => {
         <Header />
         <div style={{ height: 50 }}></div>
         <UploadBook/>
-        {/* <EpisodeTemplate seriesId={param.seriesId} episodeId={param.episodeId} /> */}
-        {/* <Footer /> */}
       </React.Fragment>
     );
   };

@@ -1,37 +1,29 @@
 import { useState, useEffect } from "react";
-import { Input, Form, Select, Table, Button, Tooltip } from "antd";
+import { Input, Form, Select, Table, Button } from "antd";
 import styles from "./user-management.module.scss";
-// import { convertLongString } from "src/utils/common-function";
-import { UserManagementModal } from "./user-modal";
 import AdminAPI from "src/api/admin";
 import { GetUserInfo } from "src/api/common";
 import { PageNavigation } from "@components/pagination";
 
 const { Search } = Input;
-const { Option } = Select;
 
 export const UserManagementTemplate = () => {
   const [form] = Form.useForm();
   const [search, setSearch] = useState({
     username: "",
     email: "",
-    status: "all",
   });
   const [userList, setUserList] = useState([]);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [userModalId, setUserModalId] = useState("");
-  const [userStatus, setUserStatus] = useState("");
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
   const [firstLoadPage, setFirstLoadPage] = useState(true);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+
   const onSearchUsername = (e) => {
-    setSearch({ ...search, username: e, email: "" });
+    setSearch({ ...search, username: e});
   };
   const onSearchEmail = (e) => {
-    setSearch({ ...search, email: e, username: "" });
-  };
-  const handleChange = (e) => {
-    setSearch({ ...search, status: e });
+    setSearch({ ...search, email: e });
   };
 
   useEffect(() => {
@@ -50,14 +42,29 @@ export const UserManagementTemplate = () => {
     }
   }, [search]);
 
+  const handleDeleteUser = (id) => {
+    console.log(id);
+    AdminAPI.deleteUser({ userId: id }).then((res) => {
+      console.log(res);
+      window.alert("Successfully deleted user!");
+      fetchData(1, 1);
+    });
+  };
+
   const fetchData = (data, page) => {
-    AdminAPI.getUserManage({
-      userInfo: GetUserInfo(),
-      body: { search: data, page: page, limit: 10 },
-    })
-      .then((data) => {
-        setUserList(data?.listUser);
-        setTotalPage(data?.totalResult > 0 ? data?.totalResult : 1);
+    AdminAPI.getAllUser()
+      .then((res) => {
+        const filteredData = res?.data.filter(
+          (user) =>
+            user.username
+              .toLowerCase()
+              .indexOf(search.username.toLowerCase()) >= 0 
+              && user.email.toLowerCase().indexOf(search.email.toLowerCase()) >= 0
+        );
+        setUserList(
+          filteredData.slice((page - 1) * itemsPerPage, page * itemsPerPage)
+        );
+        setTotalPage(filteredData.length);
       })
       .catch((error) => {
         console.log(error);
@@ -70,16 +77,18 @@ export const UserManagementTemplate = () => {
     );
   };
 
-
-
   const columns = [
+    {
+      title: "UserID",
+      dataIndex: "userid",
+    },
     {
       title: "User name",
       dataIndex: "username",
     },
     {
       title: "Join date",
-      dataIndex: "joinDate",
+      dataIndex: "registeredDate",
       render: (date) => <div>{dateConvert(new Date(date))}</div>,
     },
     {
@@ -87,37 +96,15 @@ export const UserManagementTemplate = () => {
       dataIndex: "email",
     },
     {
-      title: "Status",
-      dataIndex: "status",
-    },
-    {
-      title: "Wallet address",
-      dataIndex: "walletAddress",
-      render: (address) => (
-        <div>
-          <Tooltip title={address}>{address}</Tooltip>
-        </div>
-      ),
-    },
-    {
-      title: "Detail",
-      dataIndex: "",
-      render: (record) => (
-        <a>CSV</a>
-      ),
+      title: "Phone Number",
+      dataIndex: "phone",
     },
     {
       title: "Action",
       dataIndex: "",
       render: (record) => (
-        <Button
-          onClick={() => {
-            setModalVisible(true);
-            setUserModalId(record.userId);
-            setUserStatus(record.status);
-          }}
-        >
-          Update
+        <Button onClick={() => handleDeleteUser(record.userid)}>
+          Delete User
         </Button>
       ),
     },
@@ -135,7 +122,7 @@ export const UserManagementTemplate = () => {
             enterButton
             size="large"
             onSearch={onSearchUsername}
-            style={{ width: 200 }}
+            style={{ width: 400 }}
           />
         </Form.Item>
         <Form.Item>
@@ -146,19 +133,8 @@ export const UserManagementTemplate = () => {
             name="text"
             allowClear
             onSearch={onSearchEmail}
-            style={{ width: 200 }}
+            style={{ width: 400 }}
           />
-        </Form.Item>
-        <Form.Item>
-          <Select
-            defaultValue="all"
-            style={{ width: 200 }}
-            onChange={handleChange}
-          >
-            <Option value="all">All users</Option>
-            <Option value="active">Active users</Option>
-            <Option value="inactive">Inactive users</Option>
-          </Select>
         </Form.Item>
       </Form>
       {(search.username || search.email) && (
@@ -170,25 +146,15 @@ export const UserManagementTemplate = () => {
       <div>
         <Table columns={columns} dataSource={userList} pagination={false} />
 
-        {totalPage > 10 && (
+        {totalPage > itemsPerPage && (
           <PageNavigation
             totalItem={totalPage}
-            itemsPerPage={10}
+            itemsPerPage={itemsPerPage}
             page={page}
             setPage={setPage}
           />
         )}
       </div>
-      {modalVisible && (
-        <UserManagementModal
-          visble={modalVisible}
-          userId={userModalId}
-          setModalVisible={setModalVisible}
-          userStatus={userStatus}
-          setUserStatus={setUserStatus}
-          refetchData={() => fetchData(search, page)}
-        />
-      )}
     </div>
   );
 };
