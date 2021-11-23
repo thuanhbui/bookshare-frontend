@@ -7,6 +7,7 @@ import { ItemComponent } from "../item";
 import UserAPI from "src/api/user";
 import BookAPI from "src/api/book";
 import { DeleteBookModal } from "@components/modal/DeleteBookModal";
+import { GetUserInfo } from "src/api/common";
 
 export const BookShelf = ({ selectedCate }) => {
   const router = useRouter();
@@ -39,7 +40,7 @@ export const BookShelf = ({ selectedCate }) => {
 
   const featDataListProducts = (selectedCate, search) => {
     setIsLoading(true);
-    UserAPI.getBookShelf()
+    UserAPI.getBookShelf({ userInfo: GetUserInfo() })
       .then((res) => {
         console.log(res.data);
         const fullList = res.data;

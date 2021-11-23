@@ -9,6 +9,7 @@ import {
 import { Tooltip } from "antd";
 import { useRouter } from "next/router";
 import BookAPI from "src/api/book";
+import { GetUserInfo } from "src/api/common";
 
 export const ItemComponent = ({
   id = "",
@@ -43,7 +44,7 @@ export const ItemComponent = ({
       isFavorited: true,
     });
 
-    BookAPI.getInfo(id)
+    BookAPI.getInfo({ bookId: id, userInfo: GetUserInfo() })
       .then((res) => {
         setData({
           ...data,
@@ -68,7 +69,7 @@ export const ItemComponent = ({
   return (
     <>
       <div className={`${style["serie-component"]} ${style[classNames]}`}>
-        {router.pathname === "/bookshelf" && (
+        {router.pathname.startsWith("/bookshelf") && (
           <>
             <span className={`${style["edit-btn"]}`}>
               <EditFilled className={`${style["par-icon"]}`} />

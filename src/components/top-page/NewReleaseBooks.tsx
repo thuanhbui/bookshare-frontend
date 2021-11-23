@@ -3,14 +3,17 @@ import { RightArrow } from "@components/arrows/right-arrow";
 import style from "./list-layout.module.scss";
 import { useState, useEffect, useLayoutEffect } from "react";
 import { useRouter } from "next/router";
-import { ItemComponent } from "@components/item"
-import { SeeMoreNoResult } from "@components/no-result"
+import { ItemComponent } from "@components/item";
+import { SeeMoreNoResult } from "@components/no-result";
+import BookAPI from "src/api/book";
 
-export const TopHotBooks = ({ category = "all", search = "" }) => {
+export const NewReleaseBooks = ({ category = "all", search = "" }) => {
   const [data, setData] = useState(null);
   const itemWidth = 176;
   const [total, setTotal] = useState(0);
-  const [width, setWidth] = useState(typeof window !== "undefined" && window.innerWidth);
+  const [width, setWidth] = useState(
+    typeof window !== "undefined" && window.innerWidth
+  );
   const [firstInit, setFirstInit] = useState(true);
 
   const router = useRouter();
@@ -19,26 +22,17 @@ export const TopHotBooks = ({ category = "all", search = "" }) => {
     getNewReleaseSerie(category);
   }, [category, search]);
 
+  useEffect(() => {
+    getNewReleaseSerie(category);
+  }, []);
+
   const getNewReleaseSerie = (category = "all") => {
-    const userInfo = JSON.parse(window.localStorage.getItem("userInfo"));
-    //   SeriesManagementAPI.getSerieQuery({
-    //     userInfo,
-    //     limit: 10,
-    //     page: 1,
-    //     queryBy: "newReleased",
-    //     category,
-    //     isDaily: true,
-    //     search,
-    //   })
-    //     .then((res) => {
-    //       if (res.totalSeries >= 0) {
-    //         setData(res.seriesList);
-    //         setTotal(res.totalSeries);
-    //       }
-    //     })
-    //     .catch();
-    setData(Array(10).fill(0).map((i, index) => ({id: index})));
-    setTotal(20);
+    BookAPI.getNewReleaseBooks()
+      .then((res) => {
+        setData(res?.data);
+        setTotal(res?.data.length);
+      })
+      .catch((err) => console.log(err));
   };
 
   const moveRight = () => {
@@ -142,8 +136,8 @@ export const TopHotBooks = ({ category = "all", search = "" }) => {
           id="new-release-content"
           onScroll={onHorizontalScroll}
         >
-          {data?.map((serie, index) => (
-            <ItemComponent id="" classNames={`${index > 0 ? "ml-16" : ""}`}/>
+          {data?.map((book, index) => (
+            <ItemComponent id={book.bookId} classNames={`${index > 0 ? "ml-16" : ""}`} />
           ))}
         </div>
         {data && total > 0 && arrowVisible && (

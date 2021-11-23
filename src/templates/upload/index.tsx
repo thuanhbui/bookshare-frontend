@@ -4,11 +4,12 @@ import { useRouter } from "next/router";
 import style from "./upload.module.scss";
 import React, { useState } from "react";
 import { CatalogSelect } from "./CatalogSelect";
-import { Form, Input, Radio, Space, Button } from "antd";
+import { Form, Input, Button } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import BookAPI from "src/api/book";
 import { CreateBookModal } from "@components/modal/CreateBookModal";
 import { CancelCreateBookModal } from "@components/modal/CancelCreateBookModal";
+import { GetUserInfo } from "src/api/common";
 
 const scrollToTop = () => {
   document.body.scrollTop = 0;
@@ -262,7 +263,7 @@ export const UploadBook = () => {
         episodeThumbnail.thumb.pictureAsFile,
         catalogId
       );
-      BookAPI.uploadBook({ formdata: formData })
+      BookAPI.uploadBook({ formdata: formData, userInfo: GetUserInfo() })
         .then((res) => {
           setIsLoading(false);
           setModalType("");

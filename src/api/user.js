@@ -10,29 +10,27 @@ export default {
       method: "post",
       url: `${API_BASE_URL}/login`,
       data: userInfo,
-    })
-      .then((data) => {
-        return data;
-      })
+    }).then((data) => {
+      return data;
+    });
   },
-  getBookShelf: () => {
+  getBookShelf: ({ userInfo }) => {
     const _axios = axios.create();
     return _axios({
       method: "get",
-      url: `${API_BASE_URL}/books/ofUser?userId=1`,
-    })
-      .then((data) => {
-        return data;
-      })
+      url: `${API_BASE_URL}/books/ofUser?userId=${userInfo.userid}`,
+    }).then((data) => {
+      console.log(data)
+      return data;
+    });
   },
   getAllCatalog: () => {
     const _axios = axios.create();
     return _axios({
       method: "get",
       url: `${API_BASE_URL}/catalogs/all`,
-    })
-      .then((data) => {
-        return data;
-      })
+    }).then((data) => {
+      return data;
+    });
   },
 };

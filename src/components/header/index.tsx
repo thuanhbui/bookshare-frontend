@@ -27,8 +27,12 @@ export const Header = () => {
 
   const handleLogout = () => {
     window.localStorage.removeItem("userInfo");
-    location.reload();
-  }
+    console.log(router.pathname);
+    
+    if (router.pathname !== "/") {
+      router.push("/");
+    } else location.reload();
+  };
 
   const UserDropdownMenu = () => {
     return (

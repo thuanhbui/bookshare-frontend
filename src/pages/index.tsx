@@ -2,7 +2,7 @@ import { Header } from "@components/header";
 import { useRouter } from "next/router";
 import React, { useEffect, useState, useRef } from "react";
 import { SubHeader } from "@components/sub-header";
-import { TopHotBooks } from "@components/top-page/TopHotBooks";
+import { NewReleaseBooks } from "@components/top-page/NewReleaseBooks";
 import { TopByCatalog } from "@components/top-page/TopByCatalog";
 import CatalogAPI from "src/api/catalog";
 import { Footer } from "@components/footer";
@@ -36,7 +36,7 @@ const Home: React.FC<{ homepageContent: any }> = () => {
         setSelectedCate={setSelectedCate}
       />
       <div style={{ height: 50 }}></div>
-      <TopHotBooks />
+      <NewReleaseBooks />
       {categories.map((catalog, index) => {
         return <TopByCatalog catalogName={catalog.nameCatalog.toUpperCase()} search={param.search}/>;
       })}
