@@ -12,9 +12,6 @@ export default {
       .then((data) => {
         return data;
       })
-      .catch((e) => {
-        console.log(e);
-      });
   },
   uploadBook: ({ formdata }) => {
     
@@ -28,9 +25,6 @@ export default {
       .then((data) => {
         return data;
       })
-      .catch((e) => {
-        console.log(e);
-      });
   },
   getHotBooksByCatalog: ({ catalogId }) => {
     const _axios = axios.create();
@@ -41,9 +35,6 @@ export default {
       .then((data) => {
         return data;
       })
-      .catch((e) => {
-        console.log(e);
-      });
   },
   deleteBook: ({ bookId }) => {
     const _axios = axios.create();
@@ -55,8 +46,5 @@ export default {
       .then((data) => {
         return data;
       })
-      .catch((e) => {
-        console.log(e);
-      });
   }
 };

@@ -38,17 +38,21 @@ const LoginTemplate = (props) => {
     //   return;
     // }
 
-    let userInfo = new FormData();
-
-    userInfo.append("username", `${username}`);
-    userInfo.append("password", `${password}`);
+    let userInfo = {
+      username: username,
+      password: password,
+    };
 
     UserAPI.login({ userInfo: userInfo })
       .then((res) => {
-        console.log(res);
-        // UserAPI.getAllCatalog().then((res) => console.log(res));
+        const userInfo = res?.data;
+        window.localStorage.setItem("userInfo", JSON.stringify(userInfo));
+        router.push("/");
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setNotification("Please check your username and password");
+      });
   };
 
   return (

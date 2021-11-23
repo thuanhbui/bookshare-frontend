@@ -1,6 +1,5 @@
 import { Header } from "@components/header";
-import { ItemComponent } from "@components/item";
-import { HomePage } from "../templates/homepage";
+import { useRouter } from "next/router";
 import React, { useEffect, useState, useRef } from "react";
 import { SubHeader } from "@components/sub-header";
 import { TopHotBooks } from "@components/top-page/TopHotBooks";
@@ -11,12 +10,23 @@ import { Footer } from "@components/footer";
 const Home: React.FC<{ homepageContent: any }> = () => {
   const [selectedCate, setSelectedCate] = useState("all");
   const [categories, setCategories] = useState([]);
+  const [param, setParam] = useState({ search: null });
+
+  const router = useRouter();
 
   useEffect(() => {
     CatalogAPI.getAllCatalog().then((res) => {
-      setCategories(res?.data);      
+      setCategories(res?.data);
     });
   }, []);
+
+  useEffect(() => {
+    router.query &&
+      setParam({
+        search: router.query.search,
+      });
+    console.log(router.query.search);
+  }, [router.query]);
 
   return (
     <div>
@@ -28,9 +38,9 @@ const Home: React.FC<{ homepageContent: any }> = () => {
       <div style={{ height: 50 }}></div>
       <TopHotBooks />
       {categories.map((catalog, index) => {
-        return <TopByCatalog catalogName={catalog.nameCatalog.toUpperCase()} />;
+        return <TopByCatalog catalogName={catalog.nameCatalog.toUpperCase()} search={param.search}/>;
       })}
-      <Footer/>
+      <Footer />
     </div>
   );
 };

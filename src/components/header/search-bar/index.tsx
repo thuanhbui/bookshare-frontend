@@ -16,7 +16,6 @@ export const SearchBar = () => {
 
   const onSearch = () => {
     router.push({
-      pathname: "/",
       query: { ...router.query, search },
     });
   };

@@ -20,22 +20,46 @@ export const BookShelf = ({ selectedCate }) => {
   const [modalType, setModalType] = useState("");
   const [deleteBookId, setDeleteBookId] = useState("");
 
+  const [param, setParam] = useState({ search: null });
+
   useEffect(() => {
     router.isReady && setCategory(router.query.category);
   }, [router]);
 
   useEffect(() => {
-    featDataListProducts(selectedCate);
-  }, [category, page, selectedCate, itemsPerPage]);
+    featDataListProducts(selectedCate, param.search);
+  }, [category, page, selectedCate, itemsPerPage, param.search]);
 
-  const featDataListProducts = (selectedCate) => {
+  useEffect(() => {
+    router.query &&
+      setParam({
+        search: router.query.search,
+      });
+  }, [router.query]);
+
+  const featDataListProducts = (selectedCate, search) => {
     setIsLoading(true);
     UserAPI.getBookShelf()
       .then((res) => {
-        console.log(res.data)
-        setDataListProducts(res?.data.slice((page-1) * itemsPerPage, page * itemsPerPage));
-        setTotalProduct(res?.data?.length);
-        setIsLoading(false);
+        console.log(res.data);
+        const fullList = res.data;
+
+        if (search) {
+          const filtered = fullList.filter(
+            (book) => book.title.toLowerCase().indexOf(search.toLowerCase()) > 0
+          );
+          setDataListProducts(
+            filtered.slice((page - 1) * itemsPerPage, page * itemsPerPage)
+          );
+          setTotalProduct(filtered.length);
+          setIsLoading(false);
+        } else {
+          setDataListProducts(
+            res?.data.slice((page - 1) * itemsPerPage, page * itemsPerPage)
+          );
+          setTotalProduct(res?.data?.length);
+          setIsLoading(false);
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -45,10 +69,10 @@ export const BookShelf = ({ selectedCate }) => {
   };
 
   const handleDeleteBook = () => {
-    BookAPI.deleteBook({bookId: deleteBookId}).then((res) => {
+    BookAPI.deleteBook({ bookId: deleteBookId }).then((res) => {
       location.reload();
-    })
-  }
+    });
+  };
 
   return (
     <div className={style["list-series-container"]} id="main-container">
@@ -60,7 +84,12 @@ export const BookShelf = ({ selectedCate }) => {
           <div className={`${style["list-series-content"]}`}>
             {!isLoading &&
               dataListProducts?.map((book, index) => (
-                <ItemComponent key={index} id={book.bookId} setModalType={setModalType} setDeleteBookId={setDeleteBookId}/>
+                <ItemComponent
+                  key={index}
+                  id={book.bookId}
+                  setModalType={setModalType}
+                  setDeleteBookId={setDeleteBookId}
+                />
               ))}
           </div>
           {!isLoading && totalProduct > itemsPerPage && (
@@ -73,7 +102,12 @@ export const BookShelf = ({ selectedCate }) => {
           )}
         </>
       )}
-      {modalType === "deleteBook" && <DeleteBookModal updateModalVisible={setModalType} deleteBook={handleDeleteBook}/>}
+      {modalType === "deleteBook" && (
+        <DeleteBookModal
+          updateModalVisible={setModalType}
+          deleteBook={handleDeleteBook}
+        />
+      )}
     </div>
   );
 };

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { SearchBar } from "../header/search-bar";
 import { Menu } from "antd";
 import style from "./sub-header.module.scss";
+import CatalogAPI from "src/api/catalog";
 
 export const SubHeader = ({
   selectedCate,
@@ -22,15 +23,10 @@ export const SubHeader = ({
   //   };
 
   useEffect(() => {
-    // CategoriesAPI.getAllCategories().then((res) => {
-    //   console.log(res);
-    //   setCategories(res);
-    // });
-    const res = [
-      { categoryName: "Khoa học", categoryId: "1" },
-      { categoryName: "Giải trí", categoryId: "2" },
-    ];
-    setCategories(res);
+
+    CatalogAPI.getAllCatalog().then((res) => {
+      setCategories(res?.data);     
+    });
   }, []);
 
   // useMemo(async () => {
@@ -74,16 +70,16 @@ export const SubHeader = ({
             return (
               <Menu.Item
                 className={`${
-                  selectedCate == cate.categoryId && style["active-item"]
+                  selectedCate == cate.catalogId && style["active-item"]
                 } ${style["sub-item"]} ${style["text-uppercase"]} ${
                   style["sub-hd-item"]
                 }`}
-                key={cate.categoryId}
+                key={cate.catalogId}
                 onClick={() => {
-                  setSelectedCate(cate.categoryId);
+                  setSelectedCate(cate.catalogId);
                 }}
               >
-                {cate.categoryName}
+                {cate.nameCatalog}
               </Menu.Item>
             );
           })}

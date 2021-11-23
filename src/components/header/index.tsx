@@ -16,28 +16,26 @@ export const Header = () => {
   const router = useRouter();
   const [isLogged, setIsLogged] = useState(true);
 
-  // useEffect(() => {
-  // 	if (typeof window !== "undefined") {
-  // 		const userInfo = GetUserInfo();
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const userInfo = window.localStorage.getItem("userInfo");
+      if (userInfo) {
+        setIsLogged(true);
+      } else setIsLogged(false);
+    }
+  }, []);
 
-  // 		if (userInfo["encryptedPrivateKey"] && userInfo["publicKey"]) {
-  // 			setIsLogged(true);
-
-  // 			setClientType(userInfo.role);
-  // 		} else {
-  // 			setIsLogged(false);
-
-  // 			setClientType("");
-  // 		}
-  // 	}
-  // }, [])
+  const handleLogout = () => {
+    window.localStorage.removeItem("userInfo");
+    location.reload();
+  }
 
   const UserDropdownMenu = () => {
     return (
       <Menu className={`${style["dropdown-menu"]}`}>
         <Menu.Item>Account</Menu.Item>
         <Menu.Item>My Books</Menu.Item>
-        <Menu.Item>Log out</Menu.Item>
+        <Menu.Item onClick={handleLogout}>Log out</Menu.Item>
       </Menu>
     );
   };
@@ -53,7 +51,10 @@ export const Header = () => {
         >
           <HddOutlined />
         </Menu.Item>
-        <Menu.Item className={`${style["icon"]} ${style["disable-antd-css"]}`} onClick={() => router.push('/upload')}>
+        <Menu.Item
+          className={`${style["icon"]} ${style["disable-antd-css"]}`}
+          onClick={() => router.push("/upload")}
+        >
           <PlusCircleOutlined />
         </Menu.Item>
 

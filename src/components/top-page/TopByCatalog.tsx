@@ -24,12 +24,10 @@ export const TopByCatalog = ({
   const router = useRouter();
 
   useLayoutEffect(() => {
-    console.log(catalogName);
     getNewReleaseSerie(category);
   }, [category, search]);
 
   const getNewReleaseSerie = (category = "all") => {
-    const userInfo = JSON.parse(window.localStorage.getItem("userInfo"));
 
     BookAPI.getHotBooksByCatalog({
       catalogId: CatalogMappingId[`${catalogName}`],
