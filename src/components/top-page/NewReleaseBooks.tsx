@@ -8,6 +8,7 @@ import { SeeMoreNoResult } from "@components/no-result";
 import BookAPI from "src/api/book";
 
 export const NewReleaseBooks = ({ category = "all", search = "" }) => {
+
   const [data, setData] = useState(null);
   const itemWidth = 176;
   const [total, setTotal] = useState(0);
@@ -29,7 +30,7 @@ export const NewReleaseBooks = ({ category = "all", search = "" }) => {
   const getNewReleaseSerie = (category = "all") => {
     BookAPI.getNewReleaseBooks()
       .then((res) => {
-        setData(res?.data);
+        setData(res?.data.slice(0,9));
         setTotal(res?.data.length);
       })
       .catch((err) => console.log(err));
@@ -104,16 +105,14 @@ export const NewReleaseBooks = ({ category = "all", search = "" }) => {
       <div
         className={`${style["list-series-header"]} ${style["new-list-series-header"]}`}
       >
-        <span className={`${style["list-series-tag"]}`}>Top Sách Hot</span>
+        <span className={`${style["list-series-tag"]}`}>New Released Books</span>
         <span
           className={`${style["see-all-tag"]}`}
           onClick={() =>
             data &&
             total > 10 &&
             router.push(
-              `/list-series/all?queryBy=newReleased&category=${category}${
-                search ? `&search=${search}` : ""
-              }&isDaily=true&tabNewRelease=all&page=1`
+              `/new-release`
             )
           }
         >

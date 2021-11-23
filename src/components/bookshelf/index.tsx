@@ -8,6 +8,7 @@ import UserAPI from "src/api/user";
 import BookAPI from "src/api/book";
 import { DeleteBookModal } from "@components/modal/DeleteBookModal";
 import { GetUserInfo } from "src/api/common";
+import { CatalogMappingId } from "src/constant";
 
 export const BookShelf = ({ selectedCate }) => {
   const router = useRouter();
@@ -17,19 +18,20 @@ export const BookShelf = ({ selectedCate }) => {
   const [itemsPerPage, setItemsPerPage] = useState(24);
   const [page, setPage] = useState(1);
   const [dataListProducts, setDataListProducts] = useState(null);
-  const [category, setCategory] = useState(router.query["category"]);
   const [modalType, setModalType] = useState("");
   const [deleteBookId, setDeleteBookId] = useState("");
 
   const [param, setParam] = useState({ search: null });
 
-  useEffect(() => {
-    router.isReady && setCategory(router.query.category);
-  }, [router]);
 
   useEffect(() => {
-    featDataListProducts(selectedCate, param.search);
-  }, [category, page, selectedCate, itemsPerPage, param.search]);
+    setPage(1);
+    featDataListProducts(selectedCate, param.search, 1);
+  }, [selectedCate, itemsPerPage, param.search]);
+
+  useEffect(() => {
+    featDataListProducts(selectedCate, param.search, page);
+  }, [page])
 
   useEffect(() => {
     router.query &&
@@ -38,29 +40,29 @@ export const BookShelf = ({ selectedCate }) => {
       });
   }, [router.query]);
 
-  const featDataListProducts = (selectedCate, search) => {
+  const featDataListProducts = (selectedCate, search, page) => {
     setIsLoading(true);
-    UserAPI.getBookShelf({ userInfo: GetUserInfo() })
+
+    console.log(selectedCate);
+    
+    const catalogId =
+      selectedCate !== "all"
+        ? selectedCate
+        : "";
+    const searchKey = search ? search : "";
+
+    UserAPI.getBookShelf({
+      userInfo: GetUserInfo(),
+      catalogId: catalogId,
+      search: searchKey,
+    })
       .then((res) => {
         console.log(res.data);
-        const fullList = res.data;
-
-        if (search) {
-          const filtered = fullList.filter(
-            (book) => book.title.toLowerCase().indexOf(search.toLowerCase()) > 0
-          );
-          setDataListProducts(
-            filtered.slice((page - 1) * itemsPerPage, page * itemsPerPage)
-          );
-          setTotalProduct(filtered.length);
-          setIsLoading(false);
-        } else {
-          setDataListProducts(
-            res?.data.slice((page - 1) * itemsPerPage, page * itemsPerPage)
-          );
-          setTotalProduct(res?.data?.length);
-          setIsLoading(false);
-        }
+        setDataListProducts(
+          res?.data.slice((page - 1) * itemsPerPage, page * itemsPerPage)
+        );
+        setTotalProduct(res?.data?.length);
+        setIsLoading(false);
       })
       .catch((err) => {
         console.log(err);

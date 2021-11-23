@@ -51,4 +51,13 @@ export default {
       return data;
     });
   },
+  toggleLike: ({userInfo, bookId}) => {
+    const _axios = axios.create();
+    return _axios({
+      method: "get",
+      url: `${API_BASE_URL}/books/toggleLike?userId=${userInfo.userid}&bookId=${bookId}`,
+    }).then((data) => {
+      return data;
+    });
+  }
 };

@@ -22,7 +22,7 @@ export const ItemComponent = ({
   const [isLogged, setIsLogged] = useState(false);
 
   const [data, setData] = useState(null);
-  const [favorite, setFavorite] = useState(data?.isFavorited);
+  const [favorite, setFavorite] = useState(data?.like);
 
   const convertLongString = (
     string: string,
@@ -51,6 +51,7 @@ export const ItemComponent = ({
           thumbnailSrc: "http://localhost:9001" + res?.data?.imageLink,
           serieName: res?.data?.title,
         });
+        setFavorite(res?.data.like);
       })
       .catch((err) => {
         console.log(err);
@@ -60,6 +61,11 @@ export const ItemComponent = ({
   const onClickFavorite = () => {
     setFavorite(!favorite);
     //call api to handle
+    BookAPI.toggleLike({ userInfo: GetUserInfo(), bookId: id })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => console.log(err));
   };
 
   const handleMoveToItem = () => {

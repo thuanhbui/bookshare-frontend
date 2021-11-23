@@ -8,7 +8,7 @@ import BookAPI from "src/api/book";
 import { DeleteBookModal } from "@components/modal/DeleteBookModal";
 import { CatalogMappingName } from "src/constant/index";
 
-export const SeeAllTemplate = ({ selectedCate }) => {
+export const NewReleaseTemplate = ({ selectedCate }) => {
   const router = useRouter();
 
   const [totalProduct, setTotalProduct] = useState(0);
@@ -29,18 +29,16 @@ export const SeeAllTemplate = ({ selectedCate }) => {
   }, [category, page, selectedCate, itemsPerPage]);
 
   const featDataListProducts = (selectedCate) => {
-
     setIsLoading(true);
 
-    BookAPI.getHotBooksByCatalog({
-      catalogId: selectedCate,
-    })
-      .then((res) => {
+    BookAPI.getNewReleaseBooks()
+      .then((res) => {          
         setDataListProducts(res?.data.slice((page - 1) * itemsPerPage, page * itemsPerPage));
         setTotalProduct(res?.data.length);
         setIsLoading(false);
       })
       .catch((err) => {
+        console.log(err);
         console.log(err);
         setTotalProduct(0);
         setIsLoading(false);
@@ -55,7 +53,9 @@ export const SeeAllTemplate = ({ selectedCate }) => {
 
   return (
     <div className={style["list-series-container"]} id="main-container">
-      <div className={`${style["list-series-tag"]}`}>{CatalogMappingName[`${selectedCate}`]}</div>
+      <div className={`${style["list-series-tag"]}`}>
+        {CatalogMappingName[`${selectedCate}`]}
+      </div>
       {!isLoading && totalProduct === 0 ? (
         <SeeMoreNoResult />
       ) : (

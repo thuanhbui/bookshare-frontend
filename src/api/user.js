@@ -14,13 +14,14 @@ export default {
       return data;
     });
   },
-  getBookShelf: ({ userInfo }) => {
+  getBookShelf: ({ userInfo, catalogId, search }) => {
     const _axios = axios.create();
+
     return _axios({
       method: "get",
-      url: `${API_BASE_URL}/books/ofUser?userId=${userInfo.userid}`,
+      url: `${API_BASE_URL}/books/ofUser?userId=${userInfo.userid}&catalogId=${catalogId}&search=${search}`,
     }).then((data) => {
-      console.log(data)
+      console.log(data);
       return data;
     });
   },

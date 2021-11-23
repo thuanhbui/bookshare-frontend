@@ -1,7 +1,7 @@
 import { SubHeader } from "@components/sub-header";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { SeeAllTemplate } from "src/templates/see-all";
+import { NewReleaseTemplate } from "src/templates/new-release";
 import { Header } from "../../components/header";
 
 const SeeAllPage = () => {
@@ -33,7 +33,7 @@ const SeeAllPage = () => {
         setSelectedCate={setCatalog}
       />
       <div style={{ height: 50 }}></div>
-      <SeeAllTemplate selectedCate={param.catalogId} />
+      <NewReleaseTemplate selectedCate={param.catalogId} />
     </React.Fragment>
   );
 };
