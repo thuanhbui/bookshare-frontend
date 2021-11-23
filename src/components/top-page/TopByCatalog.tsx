@@ -34,7 +34,6 @@ export const TopByCatalog = ({
 
     BookAPI.getHotBooksByCatalog({
       catalogId: CatalogMappingId[`${catalogName}`],
-      userInfo: GetUserInfo(),
       search: "",
     }).then((res) => {
       setData(res?.data);

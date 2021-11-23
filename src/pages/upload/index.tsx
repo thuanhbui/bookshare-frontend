@@ -8,9 +8,7 @@ const UploadPage = (props) => {
     const [param, setParam] = useState({ itemId: null });
     const [selectedCate, setSelectedCate] = useState("all");
   
-    useEffect(() => {
-      console.log("hahaha");
-      
+    useEffect(() => {      
     }, [router.isReady]);
   
     return (

@@ -32,14 +32,18 @@ export const NewReleaseTemplate = ({ selectedCate }) => {
   const featDataListProducts = (selectedCate) => {
     setIsLoading(true);
 
-    BookAPI.getNewReleaseBooks()
-      .then((res) => {          
-        setDataListProducts(res?.data.slice((page - 1) * itemsPerPage, page * itemsPerPage));
+    BookAPI.getNewReleaseBooks({
+      catalogId: "",
+      search: "",
+    })
+      .then((res) => {
+        setDataListProducts(
+          res?.data.slice((page - 1) * itemsPerPage, page * itemsPerPage)
+        );
         setTotalProduct(res?.data.length);
         setIsLoading(false);
       })
       .catch((err) => {
-        console.log(err);
         console.log(err);
         setTotalProduct(0);
         setIsLoading(false);
@@ -89,7 +93,10 @@ export const NewReleaseTemplate = ({ selectedCate }) => {
         />
       )}
       {modalType === "require-login" && (
-        <RequireLoginModal isFrom={router.asPath} updateModalVisible={setModalType}/>
+        <RequireLoginModal
+          isFrom={router.asPath}
+          updateModalVisible={setModalType}
+        />
       )}
     </div>
   );

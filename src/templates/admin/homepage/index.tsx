@@ -43,9 +43,7 @@ export const UserManagementTemplate = () => {
   }, [search]);
 
   const handleDeleteUser = (id) => {
-    console.log(id);
     AdminAPI.deleteUser({ userId: id }).then((res) => {
-      console.log(res);
       window.alert("Successfully deleted user!");
       fetchData(1, 1);
     });

@@ -7,6 +7,7 @@ import { ItemComponent } from "@components/item";
 import { SeeMoreNoResult } from "@components/no-result";
 import BookAPI from "src/api/book";
 import { RequireLoginModal } from "@components/require-modal";
+import catalog from "src/api/catalog";
 
 export const NewReleaseBooks = ({ category = "all", search = "" }) => {
 
@@ -30,7 +31,10 @@ export const NewReleaseBooks = ({ category = "all", search = "" }) => {
   }, []);
 
   const getNewReleaseSerie = (category = "all") => {
-    BookAPI.getNewReleaseBooks()
+    BookAPI.getNewReleaseBooks({
+      catalogId: "",
+      search: "",
+    })
       .then((res) => {
         setData(res?.data.slice(0,9));
         setTotal(res?.data.length);

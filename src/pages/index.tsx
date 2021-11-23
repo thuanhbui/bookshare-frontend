@@ -24,7 +24,6 @@ const Home: React.FC<{ homepageContent: any }> = () => {
       setParam({
         search: router.query.search,
       });
-    console.log(router.query.search);
   }, [router.query]);
 
   return (

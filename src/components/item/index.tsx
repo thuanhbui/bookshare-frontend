@@ -55,7 +55,6 @@ export const ItemComponent = ({
 
     BookAPI.getInfo({ bookId: id, userInfo: GetUserInfo() })
       .then((res) => {
-        console.log(res.data);
         setData({
           ...data,
           thumbnailSrc: "http://localhost:9001" + res?.data?.imageLink,

@@ -56,8 +56,6 @@ export const BookShelf = ({ selectedCate }) => {
   const featDataListProducts = (selectedCate, search, page) => {
     setIsLoading(true);
 
-    console.log(selectedCate);
-
     const catalogId = selectedCate !== "all" ? selectedCate : "";
     const searchKey = search ? search : "";
 
@@ -67,7 +65,6 @@ export const BookShelf = ({ selectedCate }) => {
       search: searchKey,
     })
       .then((res) => {
-        console.log(res.data);
         setDataListProducts(
           res?.data.slice((page - 1) * itemsPerPage, page * itemsPerPage)
         );

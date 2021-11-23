@@ -16,7 +16,6 @@ const NewReleasePage = () => {
       setParam({
         catalogId: router.query.catalog,
       });
-    console.log(router.query.catalog);
   }, [router.query]);
 
   useEffect(() => {

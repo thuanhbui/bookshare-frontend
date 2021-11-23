@@ -56,7 +56,6 @@ const EpisodeTemplate = ({ bookId }) => {
           setBookInfo(res.data);
           setFavorite(res?.data.checkLike);
           setTotalLikes(res?.data.likes);
-          console.log(res.data);
         }
       );
     }

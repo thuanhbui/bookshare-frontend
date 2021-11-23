@@ -29,7 +29,6 @@ export const Header = () => {
 
   const handleLogout = () => {
     window.localStorage.removeItem("userInfo");
-    console.log(router.pathname);
 
     if (router.pathname !== "/") {
       router.push("/");

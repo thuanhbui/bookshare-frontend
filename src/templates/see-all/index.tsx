@@ -35,6 +35,7 @@ export const SeeAllTemplate = ({ selectedCate }) => {
 
     BookAPI.getHotBooksByCatalog({
       catalogId: selectedCate,
+      search: "",
     })
       .then((res) => {
         setDataListProducts(res?.data.slice((page - 1) * itemsPerPage, page * itemsPerPage));
