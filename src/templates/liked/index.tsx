@@ -19,16 +19,27 @@ export const LikedTemplate = ({ selectedCate }) => {
   const [dataListProducts, setDataListProducts] = useState(null);
   const [modalType, setModalType] = useState("");
   const [deleteBookId, setDeleteBookId] = useState("");
+  const [isLogged, setIsLogged] = useState(false);
 
   const [param, setParam] = useState({ search: null });
 
   useEffect(() => {
+    const userInfo = GetUserInfo();
+    if (userInfo?.role !== "USER" || !userInfo) {
+      window.localStorage.setItem("routeFromLoginModal", router.asPath);
+      router.push("/login");
+    } else {
+      setIsLogged(true);
+    }
+  }, []);
+
+  useEffect(() => {
     setPage(1);
-    featDataListProducts(selectedCate, param.search, 1);
+    isLogged && featDataListProducts(selectedCate, param.search, 1);
   }, [selectedCate, itemsPerPage, param.search]);
 
   useEffect(() => {
-    featDataListProducts(selectedCate, param.search, page);
+    isLogged && featDataListProducts(selectedCate, param.search, page);
   }, [page])
 
   useEffect(() => {

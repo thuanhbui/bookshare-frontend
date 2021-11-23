@@ -26,8 +26,6 @@ const BookShelfPage = (props) => {
       />
       <div style={{ height: 50 }}></div>
       <BookShelf selectedCate={selectedCate} />
-      {/* <EpisodeTemplate seriesId={param.seriesId} episodeId={param.episodeId} /> */}
-      {/* <Footer /> */}
     </React.Fragment>
   );
 };

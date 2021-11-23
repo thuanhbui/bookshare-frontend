@@ -8,7 +8,6 @@ import CatalogAPI from "src/api/catalog";
 import { Footer } from "@components/footer";
 
 const Home: React.FC<{ homepageContent: any }> = () => {
-  const [selectedCate, setSelectedCate] = useState("all");
   const [categories, setCategories] = useState([]);
   const [param, setParam] = useState({ search: null });
 
@@ -31,15 +30,12 @@ const Home: React.FC<{ homepageContent: any }> = () => {
   return (
     <div>
       <Header />
-      <SubHeader
-        selectedCate={selectedCate}
-        setSelectedCate={setSelectedCate}
-      />
       <div style={{ height: 50 }}></div>
       <NewReleaseBooks />
       {categories.map((catalog, index) => {
         return <TopByCatalog catalogName={catalog.nameCatalog.toUpperCase()} search={param.search}/>;
       })}
+      <div style={{ height: 100 }}></div>
       <Footer />
     </div>
   );

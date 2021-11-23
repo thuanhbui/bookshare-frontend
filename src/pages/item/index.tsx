@@ -2,7 +2,6 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { Header } from "../../components/header";
 import EpisodeTemplate from "src/templates/item";
-import { Footer } from "@components/footer";
 
 const ItemPage = (props) => {
   const router = useRouter();

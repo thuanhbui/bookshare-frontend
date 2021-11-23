@@ -2,7 +2,7 @@ import { FileUpload } from "@components/file-upload/FileUpload";
 import { PhotoUpload } from "@components/file-upload/PhotoUpload";
 import { useRouter } from "next/router";
 import style from "./upload.module.scss";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { CatalogSelect } from "./CatalogSelect";
 import { Form, Input, Button } from "antd";
 import TextArea from "antd/lib/input/TextArea";
@@ -27,6 +27,17 @@ export const UploadBook = () => {
   const [catalogErrMsg, setCatalogErrMsg] = useState(false);
   const [modalType, setModalType] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isLogged, setIsLogged] = useState(false);
+
+  useEffect(() => {
+    const userInfo = GetUserInfo();
+    if (userInfo?.role !== "USER" || !userInfo) {
+      window.localStorage.setItem("routeFromLoginModal", router.asPath);
+      router.push("/login");
+    } else {
+      setIsLogged(true);
+    }
+  }, []);
 
   const [episodeThumbnail, setEpisodeThumbnail] = useState({
     thumb: null,
