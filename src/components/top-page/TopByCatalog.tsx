@@ -31,8 +31,6 @@ export const TopByCatalog = ({
   const getNewReleaseSerie = (category = "all") => {
     const userInfo = JSON.parse(window.localStorage.getItem("userInfo"));
 
-    console.log(CatalogMappingId[`${catalogName}`])
-
     BookAPI.getHotBooksByCatalog({
       catalogId: CatalogMappingId[`${catalogName}`],
     }).then((res) => {
@@ -116,11 +114,7 @@ export const TopByCatalog = ({
           onClick={() =>
             data &&
             total > 10 &&
-            router.push(
-              `/list-series/all?queryBy=newReleased&category=${category}${
-                search ? `&search=${search}` : ""
-              }&isDaily=true&tabNewRelease=all&page=1`
-            )
+            router.push(`/see-all?catalog=${CatalogMappingId[`${catalogName}`]}`)
           }
         >
           {data && total > 10 && "See All"}

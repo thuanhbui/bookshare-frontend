@@ -1,27 +1,27 @@
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+import { SeeAllTemplate } from "src/templates/see-all";
 import { Header } from "../../components/header";
-import TestApi from "src/api/test";
-import EpisodeTemplate from "src/templates/item";
 
-const ItemPage = (props) => {
+const SeeAllPage = () => {
   const router = useRouter();
-  const [param, setParam] = useState({ itemId: null });
+  const [param, setParam] = useState({ catalogId: null });
 
   useEffect(() => {
     router.query &&
       setParam({
-        itemId: router.query.itemId,
+        catalogId: router.query.catalog,
       });
+    console.log(router.query.catalog);
   }, [router.isReady]);
 
   return (
     <React.Fragment>
       <Header />
-      <EpisodeTemplate bookId={param.itemId} />
-      {/* <Footer /> */}
+      <div style={{ height: 50 }}></div>
+      <SeeAllTemplate selectedCate={param.catalogId}/>
     </React.Fragment>
   );
 };
 
-export default ItemPage;
+export default SeeAllPage;

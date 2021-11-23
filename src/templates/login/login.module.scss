@@ -92,6 +92,7 @@
   line-height: rem($lh2);
   border: none;
   margin-right: rem(5px);
+  cursor: pointer;
   &:hover {
     background-color: $color-blue-2 !important;
     color: $color-white !important;

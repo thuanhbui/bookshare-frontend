@@ -153,7 +153,7 @@ const EpisodeTemplate = ({ bookId }) => {
                 <Col span={11}>
                   <Button
                     className={`${style["available"]} ${style["btn-buy-now"]}`}
-                    href="Users/thuanhbui/Downloads/01-34.pdf"
+                    href={bookInfo?.fileLink}
                     target="_blank"
                   >
                     Enjoy
