@@ -7,6 +7,8 @@ import { ItemComponent } from "@components/item";
 import { SeeMoreNoResult } from "@components/no-result";
 import BookAPI from "src/api/book";
 import { CatalogMappingId } from "src/constant/index";
+import { RequireLoginModal } from "@components/require-modal";
+import { GetUserInfo } from "src/api/common";
 
 export const TopByCatalog = ({
   category = "all",
@@ -20,6 +22,7 @@ export const TopByCatalog = ({
     typeof window !== "undefined" && window.innerWidth
   );
   const [firstInit, setFirstInit] = useState(true);
+  const [modalType, setModalType] = useState("");
 
   const router = useRouter();
 
@@ -31,6 +34,7 @@ export const TopByCatalog = ({
 
     BookAPI.getHotBooksByCatalog({
       catalogId: CatalogMappingId[`${catalogName}`],
+      search: "",
     }).then((res) => {
       setData(res?.data);
       setTotal(res?.data.length);
@@ -138,6 +142,7 @@ export const TopByCatalog = ({
             <ItemComponent
               id={serie?.bookId}
               classNames={`${index > 0 ? "ml-16" : ""}`}
+              setModalType={setModalType}
             />
           ))}
         </div>
@@ -147,6 +152,9 @@ export const TopByCatalog = ({
             arrowState={arrowState}
             onClick={() => moveRight()}
           />
+        )}
+        {modalType === "require-login" && (
+          <RequireLoginModal isFrom={router.asPath} updateModalVisible={setModalType}/>
         )}
       </div>
     </>

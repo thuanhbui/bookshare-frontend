@@ -1,16 +1,9 @@
 import React, { useState } from "react";
 import { Input } from "@components/input";
-// import UserAPI from "../../api/user";
-// import {
-//   SignMessage,
-//   SymmetricDecrypt,
-// } from "src/api/auth/service/auth-cryptography";
 import Router, { useRouter } from "next/router";
 import { Button, Row, Col } from "antd";
-// import CustomerCartAPI from "../../api/customer/cart";
-import { useSelector, useDispatch } from "react-redux";
 import style from "./login.module.scss";
-import input from "../../components/input/input.module.scss";
+import input from "../../../components/input/input.module.scss";
 import UserAPI from "src/api/user";
 
 const LoginTemplate = (props) => {
@@ -36,17 +29,16 @@ const LoginTemplate = (props) => {
 
     UserAPI.login({ userInfo: userInfo })
       .then((res) => {
-        
         const userInfo = res?.data;
         window.localStorage.setItem("userInfo", JSON.stringify(userInfo));
         const path = window.localStorage.getItem("routeFromLoginModal");
         window.localStorage.removeItem("routeFromLoginModal");
 
         if (userInfo.role === "USER") {
-          if (path) {
-            router.push(path);
-          } else router.push("/");
-        } else setNotification("Please check your username and password");
+          setNotification("Please check your username and password")
+        } else {
+          router.push("admin/homepage");
+        };
       })
       .catch((err) => {
         console.log(err);

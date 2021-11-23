@@ -38,6 +38,15 @@ export const ItemComponent = ({
   };
 
   useEffect(() => {
+    const userInfo = GetUserInfo();
+    if (userInfo?.role === "USER") {
+      setIsLogged(true);
+    } else {
+      setIsLogged(false);
+    }
+  }, []);
+
+  useEffect(() => {
     setData({
       thumbnailSrc: "/mockup/item.jpg",
       serieName: "This name",
@@ -51,7 +60,7 @@ export const ItemComponent = ({
           thumbnailSrc: "http://localhost:9001" + res?.data?.imageLink,
           serieName: res?.data?.title,
         });
-        setFavorite(res?.data.like);
+        setFavorite(res?.data.checkLike);
       })
       .catch((err) => {
         console.log(err);
@@ -59,13 +68,16 @@ export const ItemComponent = ({
   }, []);
 
   const onClickFavorite = () => {
-    setFavorite(!favorite);
-    //call api to handle
-    BookAPI.toggleLike({ userInfo: GetUserInfo(), bookId: id })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => console.log(err));
+    if (isLogged) {
+      setFavorite(!favorite);
+      BookAPI.toggleLike({ userInfo: GetUserInfo(), bookId: id })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => console.log(err));
+    } else {
+      setModalType("require-login");
+    }
   };
 
   const handleMoveToItem = () => {

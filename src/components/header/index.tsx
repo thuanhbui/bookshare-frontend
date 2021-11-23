@@ -15,20 +15,21 @@ import { SearchBar } from "./search-bar";
 export const Header = () => {
   const router = useRouter();
   const [isLogged, setIsLogged] = useState(true);
+  const [role, setRole] = useState("");
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const userInfo = window.localStorage.getItem("userInfo");
+      const userInfo = JSON.parse(window.localStorage.getItem("userInfo"));
       if (userInfo) {
         setIsLogged(true);
+        setRole(userInfo?.role);
       } else setIsLogged(false);
     }
   }, []);
 
   const handleLogout = () => {
     window.localStorage.removeItem("userInfo");
-    console.log(router.pathname);
-    
+
     if (router.pathname !== "/") {
       router.push("/");
     } else location.reload();
@@ -37,8 +38,14 @@ export const Header = () => {
   const UserDropdownMenu = () => {
     return (
       <Menu className={`${style["dropdown-menu"]}`}>
-        <Menu.Item onClick={() => router.push("/account")}>Account</Menu.Item>
-        <Menu.Item>My Books</Menu.Item>
+        {role === "USER" && (
+          <>
+            <Menu.Item onClick={() => router.push("/account")}>
+              Account
+            </Menu.Item>
+            <Menu.Item onClick={() => router.push("/liked")}>Liked</Menu.Item>
+          </>
+        )}
         <Menu.Item onClick={handleLogout}>Log out</Menu.Item>
       </Menu>
     );
@@ -47,22 +54,30 @@ export const Header = () => {
   const Signed = () => {
     return (
       <>
-        <Menu.Item
-          className={`${style["icon"]} ${style["disable-antd-css"]} ${style["ml-auto"]}`}
-          onClick={() => {
-            router.push("/bookshelf");
-          }}
-        >
-          <HddOutlined />
-        </Menu.Item>
-        <Menu.Item
-          className={`${style["icon"]} ${style["disable-antd-css"]}`}
-          onClick={() => router.push("/upload")}
-        >
-          <PlusCircleOutlined />
-        </Menu.Item>
+        {role === "USER" && (
+          <>
+            <Menu.Item
+              className={`${style["icon"]} ${style["disable-antd-css"]} ${style["ml-auto"]}`}
+              onClick={() => {
+                router.push("/bookshelf");
+              }}
+            >
+              <HddOutlined />
+            </Menu.Item>
+            <Menu.Item
+              className={`${style["icon"]} ${style["disable-antd-css"]}`}
+              onClick={() => router.push("/upload")}
+            >
+              <PlusCircleOutlined />
+            </Menu.Item>
+          </>
+        )}
 
-        <Menu.Item className={`${style["icon"]} ${style["disable-antd-css"]}`}>
+        <Menu.Item
+          className={`${style["icon"]} ${style["disable-antd-css"]} ${
+            role === "ADMIN" && style["ml-auto"]
+          }`}
+        >
           <Dropdown
             overlay={UserDropdownMenu}
             trigger={["click"]}

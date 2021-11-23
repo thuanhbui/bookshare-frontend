@@ -3,11 +3,13 @@ import { API_BASE_URL } from "./const";
 const axios = require("axios");
 
 export default {
-  getInfo: ({bookId, userInfo}) => {
+  getInfo: ({ bookId, userInfo }) => {
     const _axios = axios.create();
     return _axios({
       method: "get",
-      url: `${API_BASE_URL}/books/${bookId}?userId=${userInfo?.userid}`,
+      url: `${API_BASE_URL}/books/${bookId}?userId=${
+        userInfo?.userid ? userInfo?.userid : ""
+      }`,
     }).then((data) => {
       return data;
     });
@@ -23,11 +25,11 @@ export default {
       return data;
     });
   },
-  getHotBooksByCatalog: ({ catalogId }) => {
+  getHotBooksByCatalog: ({ catalogId, search }) => {
     const _axios = axios.create();
     return _axios({
       method: "get",
-      url: `${API_BASE_URL}/books/top10/${catalogId}`,
+      url: `${API_BASE_URL}/books/top10?catalogId=${catalogId}&search=${search}`,
     }).then((data) => {
       return data;
     });
@@ -42,16 +44,16 @@ export default {
       return data;
     });
   },
-  getNewReleaseBooks: () => {
+  getNewReleaseBooks: ({ catalogId, search }) => {
     const _axios = axios.create();
     return _axios({
       method: "get",
-      url: `${API_BASE_URL}/books/new`,
+      url: `${API_BASE_URL}/books/new?catalogId=${catalogId}&search=${search}`,
     }).then((data) => {
       return data;
     });
   },
-  toggleLike: ({userInfo, bookId}) => {
+  toggleLike: ({ userInfo, bookId }) => {
     const _axios = axios.create();
     return _axios({
       method: "get",
@@ -59,5 +61,5 @@ export default {
     }).then((data) => {
       return data;
     });
-  }
+  },
 };

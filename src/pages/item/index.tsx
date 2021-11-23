@@ -1,7 +1,6 @@
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { Header } from "../../components/header";
-import TestApi from "src/api/test";
 import EpisodeTemplate from "src/templates/item";
 
 const ItemPage = (props) => {
@@ -19,7 +18,6 @@ const ItemPage = (props) => {
     <React.Fragment>
       <Header />
       <EpisodeTemplate bookId={param.itemId} />
-      {/* <Footer /> */}
     </React.Fragment>
   );
 };

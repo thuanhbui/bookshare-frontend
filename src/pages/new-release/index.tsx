@@ -16,14 +16,7 @@ const NewReleasePage = () => {
       setParam({
         catalogId: router.query.catalog,
       });
-    console.log(router.query.catalog);
   }, [router.query]);
-
-  useEffect(() => {
-    router.push({
-      query: { catalog },
-    });
-  }, [catalog])
 
   return (
     <React.Fragment>
@@ -33,7 +26,7 @@ const NewReleasePage = () => {
         setSelectedCate={setCatalog}
       />
       <div style={{ height: 50 }}></div>
-      <NewReleaseTemplate selectedCate={param.catalogId} />
+      <NewReleaseTemplate selectedCate={catalog} />
     </React.Fragment>
   );
 };

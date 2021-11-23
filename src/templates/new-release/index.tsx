@@ -7,6 +7,7 @@ import { ItemComponent } from "@components/item";
 import BookAPI from "src/api/book";
 import { DeleteBookModal } from "@components/modal/DeleteBookModal";
 import { CatalogMappingName } from "src/constant/index";
+import { RequireLoginModal } from "@components/require-modal";
 
 export const NewReleaseTemplate = ({ selectedCate }) => {
   const router = useRouter();
@@ -20,25 +21,40 @@ export const NewReleaseTemplate = ({ selectedCate }) => {
   const [modalType, setModalType] = useState("");
   const [deleteBookId, setDeleteBookId] = useState("");
 
+  const [param, setParam] = useState({ search: null });
+
   useEffect(() => {
     router.isReady && setCategory(router.query.category);
   }, [router]);
 
   useEffect(() => {
     featDataListProducts(selectedCate);
-  }, [category, page, selectedCate, itemsPerPage]);
+  }, [category, page, selectedCate, itemsPerPage, param.search]);
+
+  useEffect(() => {
+    router.query &&
+      setParam({
+        search: router.query.search,
+      });
+  }, [router.query]);
 
   const featDataListProducts = (selectedCate) => {
     setIsLoading(true);
 
-    BookAPI.getNewReleaseBooks()
-      .then((res) => {          
-        setDataListProducts(res?.data.slice((page - 1) * itemsPerPage, page * itemsPerPage));
+    const catalogId = selectedCate ? selectedCate !== "all" ? selectedCate : "" : "";
+    
+    BookAPI.getNewReleaseBooks({
+      catalogId: catalogId,
+      search: param.search ? param.search : "",
+    })
+      .then((res) => {
+        setDataListProducts(
+          res?.data.slice((page - 1) * itemsPerPage, page * itemsPerPage)
+        );
         setTotalProduct(res?.data.length);
         setIsLoading(false);
       })
       .catch((err) => {
-        console.log(err);
         console.log(err);
         setTotalProduct(0);
         setIsLoading(false);
@@ -85,6 +101,12 @@ export const NewReleaseTemplate = ({ selectedCate }) => {
         <DeleteBookModal
           updateModalVisible={setModalType}
           deleteBook={handleDeleteBook}
+        />
+      )}
+      {modalType === "require-login" && (
+        <RequireLoginModal
+          isFrom={router.asPath}
+          updateModalVisible={setModalType}
         />
       )}
     </div>

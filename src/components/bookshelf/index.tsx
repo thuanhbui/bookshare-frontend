@@ -8,7 +8,6 @@ import UserAPI from "src/api/user";
 import BookAPI from "src/api/book";
 import { DeleteBookModal } from "@components/modal/DeleteBookModal";
 import { GetUserInfo } from "src/api/common";
-import { CatalogMappingId } from "src/constant";
 
 export const BookShelf = ({ selectedCate }) => {
   const router = useRouter();
@@ -20,18 +19,32 @@ export const BookShelf = ({ selectedCate }) => {
   const [dataListProducts, setDataListProducts] = useState(null);
   const [modalType, setModalType] = useState("");
   const [deleteBookId, setDeleteBookId] = useState("");
+  const [isLogged, setIsLogged] = useState(false);
 
   const [param, setParam] = useState({ search: null });
 
+  useEffect(() => {
+    const userInfo = GetUserInfo();
+    if (userInfo?.role !== "USER" || !userInfo) {
+      if (userInfo?.role === "ADMIN") {
+        router.push("/admin/homepage");
+      } else {
+        window.localStorage.setItem("routeFromLoginModal", router.asPath);
+        router.push("/login");
+      }
+    } else {
+      setIsLogged(true);
+    }
+  }, []);
 
   useEffect(() => {
     setPage(1);
-    featDataListProducts(selectedCate, param.search, 1);
+    isLogged && featDataListProducts(selectedCate, param.search, 1);
   }, [selectedCate, itemsPerPage, param.search]);
 
   useEffect(() => {
-    featDataListProducts(selectedCate, param.search, page);
-  }, [page])
+    isLogged && featDataListProducts(selectedCate, param.search, page);
+  }, [page]);
 
   useEffect(() => {
     router.query &&
@@ -43,12 +56,7 @@ export const BookShelf = ({ selectedCate }) => {
   const featDataListProducts = (selectedCate, search, page) => {
     setIsLoading(true);
 
-    console.log(selectedCate);
-    
-    const catalogId =
-      selectedCate !== "all"
-        ? selectedCate
-        : "";
+    const catalogId = selectedCate !== "all" ? selectedCate : "";
     const searchKey = search ? search : "";
 
     UserAPI.getBookShelf({
@@ -57,7 +65,6 @@ export const BookShelf = ({ selectedCate }) => {
       search: searchKey,
     })
       .then((res) => {
-        console.log(res.data);
         setDataListProducts(
           res?.data.slice((page - 1) * itemsPerPage, page * itemsPerPage)
         );

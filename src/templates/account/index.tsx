@@ -1,12 +1,12 @@
 import style from "./account.module.scss";
 import { Form, Input, Typography, Space, Image, Switch } from "antd";
 import { useEffect, useState } from "react";
-// import CustomerProfileAPI from "../../api/customer/profile";
-// import { GetUserInfo } from "src/api/user";
 import { EditPasswordModal } from "@components/account-modal/EditUserPassword";
 import { EditUsernameModal } from "@components/account-modal/EditUserName";
-
+import { GetUserInfo } from "src/api/common";
+import { useRouter } from "next/router";
 export const AccountTemplate = () => {
+  const router = useRouter();
 
   const [profile, setProfile] = useState({
     _id: "",
@@ -16,22 +16,23 @@ export const AccountTemplate = () => {
   });
   const [editPass, setEditPass] = useState(false);
   const [editUsername, setEditUsername] = useState(false);
-  const [modalType, setModalType] = useState("");
 
-  const [checkedGoogle, setCheckedGoogle] = useState(false);
-  const [checkedMail, setCheckedMail] = useState(true);
-
-//   useEffect(() => {
-//     CustomerProfileAPI.getProfile({ userInfo: GetUserInfo() }).then((res) => {
-//       const { isEnabled2FA, isVerifyEmail } = res;
-
-//       setProfile(res);
-
-//       setCheckedGoogle(isEnabled2FA);
-
-//       setCheckedMail(isVerifyEmail);
-//     });
-//   }, []);
+  useEffect(() => {
+    const userInfo = GetUserInfo();
+    if (userInfo) {
+      if (userInfo.role === "ADMIN") {
+        router.push("/admin/homepage");
+      } else
+        setProfile({
+          ...profile,
+          email: userInfo?.email,
+          displayName: userInfo?.username,
+        });
+    } else {
+      window.localStorage.setItem("routeFromLoginModal", router.asPath);
+      router.push("/login");
+    }
+  }, []);
 
   return (
     <div className={`${style["account-container"]}`}>

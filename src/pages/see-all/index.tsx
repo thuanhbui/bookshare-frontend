@@ -8,22 +8,20 @@ const SeeAllPage = () => {
   
   const router = useRouter();
   const [param, setParam] = useState({ catalogId: null });
-  const [catalog, setCatalog] = useState("all");
-
+  const [catalog, setCatalog] = useState(null);
 
   useEffect(() => {
     router.query &&
       setParam({
         catalogId: router.query.catalog,
       });
-    console.log(router.query.catalog);
   }, [router.query]);
 
-  useEffect(() => {
-    router.push({
-      query: { catalog },
-    });
-  }, [catalog])
+  // useEffect(() => {
+  //   router.push({
+  //     query: { catalog },
+  //   });
+  // }, [catalog])
 
   return (
     <React.Fragment>
@@ -33,7 +31,7 @@ const SeeAllPage = () => {
         setSelectedCate={setCatalog}
       />
       <div style={{ height: 50 }}></div>
-      <SeeAllTemplate selectedCate={param.catalogId} />
+      <SeeAllTemplate selectedCate={catalog} />
     </React.Fragment>
   );
 };

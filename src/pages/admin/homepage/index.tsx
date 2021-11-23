@@ -1,9 +1,9 @@
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { Header } from "@components/header";
-import { UploadBook } from "src/templates/upload";
+import { UserManagementTemplate } from "src/templates/admin/homepage";
 
-const UploadPage = (props) => {
+const AdminHomePageBook = (props) => {
     const router = useRouter();
     const [param, setParam] = useState({ itemId: null });
     const [selectedCate, setSelectedCate] = useState("all");
@@ -15,9 +15,9 @@ const UploadPage = (props) => {
       <React.Fragment>
         <Header />
         <div style={{ height: 50 }}></div>
-        <UploadBook/>
+        <UserManagementTemplate/>
       </React.Fragment>
     );
   };
   
-  export default UploadPage;
+  export default AdminHomePageBook;
