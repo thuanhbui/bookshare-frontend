@@ -8,9 +8,9 @@ import CustomImageField from "../../components/image";
 import Share from "../../components/share";
 import { HeartFilled, HeartOutlined } from "@ant-design/icons";
 import BookAPI from "src/api/book";
+import { GetUserInfo } from "src/api/common";
 
 const EpisodeTemplate = ({ bookId }) => {
-
   const router = useRouter();
   const [shareModal, setShareModal] = useState(false);
   const [favorite, setFavorite] = useState(false);
@@ -26,8 +26,7 @@ const EpisodeTemplate = ({ bookId }) => {
     router.push(pathname);
   };
 
-  const onClickFavorite = () => {
-  };
+  const onClickFavorite = () => {};
 
   useEffect(() => {
     fetchData();
@@ -35,15 +34,16 @@ const EpisodeTemplate = ({ bookId }) => {
 
   const fetchData = () => {
     if (bookId) {
-      BookAPI.getInfo(bookId).then((res) => {
-        setBookInfo(res.data);
-        console.log(res.data);
-      });
+      BookAPI.getInfo({ bookId: bookId, userInfo: GetUserInfo() }).then(
+        (res) => {
+          setBookInfo(res.data);
+          console.log(res.data);
+        }
+      );
     }
   };
 
-  const handleDownload = () => {
-  };
+  const handleDownload = () => {};
 
   return (
     <div className={style.nft}>
@@ -153,6 +153,8 @@ const EpisodeTemplate = ({ bookId }) => {
                 <Col span={11}>
                   <Button
                     className={`${style["available"]} ${style["btn-buy-now"]}`}
+                    href={bookInfo?.fileLink}
+                    target="_blank"
                   >
                     Enjoy
                   </Button>
@@ -166,9 +168,7 @@ const EpisodeTemplate = ({ bookId }) => {
         <Col xs={24} className={`${style["description"]}`}>
           <Skeleton
             active
-            loading={
-              bookInfo?.description !== "" && !bookInfo?.description
-            }
+            loading={bookInfo?.description !== "" && !bookInfo?.description}
           >
             <p>{bookInfo?.description}</p>
           </Skeleton>
@@ -181,7 +181,6 @@ const EpisodeTemplate = ({ bookId }) => {
             isFrom={router.asPath}
           />
         )} */}
-
     </div>
   );
 };

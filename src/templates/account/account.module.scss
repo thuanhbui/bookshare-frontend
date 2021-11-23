@@ -1,0 +1,245 @@
+@import "@components/global-scss/variables.scss";
+
+#_next {
+  background: $color-gray-7;
+}
+
+.account-container {
+  font-family: $font-euclid-regular;
+  padding-top: rem(60px);
+  background: $color-gray-7;
+  padding-bottom: rem(100px);
+  .account-ctn {
+    position: relative;
+    width: rem(731px);
+    margin: auto;
+    .account-header {
+      position: relative;
+      left: rem(-100px);
+      display: inline-block;
+      font-size: rem($fs3);
+      font-weight: $fw-bold;
+      line-height: rem($lh4);
+    }
+  }
+}
+
+.account-main {
+  .title {
+    display: inline-block;
+    font-size: rem($fs3);
+    font-weight: $fw-bold;
+    line-height: rem($lh4);
+    margin-bottom: rem(14px);
+    margin-top: rem(45px);
+  }
+
+  .info-form {
+    width: rem(731px);
+    height: rem(315px);
+    font-size: rem($fs1);
+    font-weight: $fw-normal;
+    line-height: rem($lh2);
+    background-color: $color-white;
+    padding: rem(40px) rem(96px);
+
+    .form-item {
+      margin-bottom: rem(20px);
+      div[class="ant-form-item-label"] {
+        padding-bottom: 0 !important;
+      }
+    }
+    .input-item {
+      width: rem(445px);
+      color: $color-light-black;
+      height: rem(40px);
+    }
+
+    .edit-btn {
+      margin-left: rem(60px);
+      font-size: rem($fs1);
+      font-weight: $fw-bold;
+      line-height: rem($lh2);
+      color: $color-light-black;
+      text-decoration: underline;
+    }
+  }
+}
+
+.title-container {
+  display: flex;
+}
+
+.add-payment-method-btn {
+  width: rem(127px);
+  height: rem(39px);
+  font-weight: $fw-bold;
+  line-height: $lh2;
+  font-size: $fs1;
+  color: $color-white;
+  background: $color-blue-2;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  margin-left: auto;
+  margin-top: rem(40px);
+  margin-bottom: rem(10px);
+}
+
+.no-card {
+  display: flex;
+  margin: rem(36px) auto rem(36px) rem(97px);
+}
+
+.payment-list {
+  background: $color-white;
+  min-height: rem(120px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.auth-container {
+  background: $color-white;
+  padding: rem(24px) rem(96px);
+
+  .auth-item {
+    display: flex;
+    width: 100%;
+    padding: rem(16px) 0;
+    .auth-img {
+      width: rem(24px);
+      height: rem(24px);
+      margin-right: rem(14px);
+    }
+    .auth-name {
+      display: inline-block;
+      margin-right: auto;
+      line-height: $lh2;
+      font-size: $fs1;
+    }
+    .auth-switch {
+      margin-left: 50%;
+    }
+    .auth-switch[aria-checked="true"] {
+      background: $color-green-2;
+    }
+  }
+}
+
+.card-lists {
+  margin: rem(30px) rem(96px) rem(40px) rem(96px);
+  font-size: rem($fs1);
+  line-height: rem($lh2);
+
+  .card-item {
+    margin-top: rem(10px);
+    display: flex;
+    align-items: center;
+
+    .card-img {
+      width: rem(48px);
+      height: rem(34px);
+    }
+    .card-name {
+      margin-left: rem(9px);
+      margin-right: auto;
+    }
+    .card-number {
+      font-weight: $fw-bold;
+    }
+    .card-remove {
+      display: inline-block;
+      margin-left: rem(172px);
+      text-decoration: underline;
+      font-weight: $fw-bold;
+    }
+  }
+}
+
+.cursor_pointer {
+  cursor: pointer;
+}
+
+.bg-white {
+  background: $color-white !important;
+}
+
+.bg-white::placeholder {
+  color: $color-light-black;
+}
+
+.password {
+  letter-spacing: rem(1px);
+  font-size: rem($fs3);
+}
+
+.remove-cart-alert {
+  display: flex;
+  margin-top: rem(18px);
+
+  .footer-button {
+    margin-top: rem(11px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: $fs1;
+    line-height: $lh2;
+    width: rem(160px);
+    height: rem(40px);
+    cursor: pointer;
+  }
+
+  .cancel {
+    border: rem(1px) solid $color-gray-6;
+    margin-right: rem(30px);
+  }
+
+  .save-active {
+    background: $color-blue-2;
+    color: $color-white;
+  }
+}
+
+.remove-cart-image {
+  width: 50px;
+  margin-right: 15px;
+}
+
+.footer-button {
+  margin-top: rem(11px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: $fs1;
+  line-height: $lh2;
+  width: rem(160px);
+  height: rem(40px);
+  cursor: pointer;
+}
+
+.account-info-head-box {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  align-items: center;
+  margin-bottom: 11px;
+  margin-right: 16px;
+}
+
+.edit-info-btn {
+  width: rem(137px);
+  height: rem(30px);
+  font-weight: $fw-bold;
+  line-height: $lh2;
+  font-size: $fs1;
+  color: $color-white;
+  background: $color-blue-2;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}

@@ -12,8 +12,5 @@ export default {
       .then((data) => {
         return data;
       })
-      .catch((e) => {
-        console.log(e);
-      });
   },
 };

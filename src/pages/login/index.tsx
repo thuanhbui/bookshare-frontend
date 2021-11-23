@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import LoginTemplate from "../../templates/login";
 
 const LoginPage = () => {
-    return <LoginTemplate />;
-  };
+  useEffect(() => {
+    window.localStorage.removeItem("userInfo");
+  }, []);
+  return <LoginTemplate />;
+};
 
 export default LoginPage;

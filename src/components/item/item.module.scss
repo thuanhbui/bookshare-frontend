@@ -107,7 +107,7 @@
 .edit-btn, .close-btn {
   height: 20px;
   width: 20px;
-  background-color: #bbb;
+  background-color: $color-bold-white;
   border-radius: 50%;
   display: flex;
   position: absolute;
@@ -123,4 +123,8 @@
 
 .edit-btn {
   left: rem(120px);
+}
+
+.par-icon {
+  color: #54ACEC;
 }

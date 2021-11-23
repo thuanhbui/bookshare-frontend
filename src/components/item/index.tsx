@@ -9,6 +9,7 @@ import {
 import { Tooltip } from "antd";
 import { useRouter } from "next/router";
 import BookAPI from "src/api/book";
+import { GetUserInfo } from "src/api/common";
 
 export const ItemComponent = ({
   id = "",
@@ -21,7 +22,7 @@ export const ItemComponent = ({
   const [isLogged, setIsLogged] = useState(false);
 
   const [data, setData] = useState(null);
-  const [favorite, setFavorite] = useState(data?.isFavorited);
+  const [favorite, setFavorite] = useState(data?.like);
 
   const convertLongString = (
     string: string,
@@ -43,13 +44,14 @@ export const ItemComponent = ({
       isFavorited: true,
     });
 
-    BookAPI.getInfo(id)
+    BookAPI.getInfo({ bookId: id, userInfo: GetUserInfo() })
       .then((res) => {
         setData({
           ...data,
           thumbnailSrc: "http://localhost:9001" + res?.data?.imageLink,
           serieName: res?.data?.title,
         });
+        setFavorite(res?.data.like);
       })
       .catch((err) => {
         console.log(err);
@@ -59,6 +61,11 @@ export const ItemComponent = ({
   const onClickFavorite = () => {
     setFavorite(!favorite);
     //call api to handle
+    BookAPI.toggleLike({ userInfo: GetUserInfo(), bookId: id })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => console.log(err));
   };
 
   const handleMoveToItem = () => {
@@ -68,7 +75,7 @@ export const ItemComponent = ({
   return (
     <>
       <div className={`${style["serie-component"]} ${style[classNames]}`}>
-        {router.pathname === "/bookshelf" && (
+        {router.pathname.startsWith("/bookshelf") && (
           <>
             <span className={`${style["edit-btn"]}`}>
               <EditFilled className={`${style["par-icon"]}`} />

@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from "react";
-import style from "./list-item.module.scss";
+import style from "../../components/bookshelf/list-item.module.scss";
 import { useRouter } from "next/router";
-import { SeeMoreNoResult } from "../no-result";
-import { PageNavigation } from "../pagination";
-import { ItemComponent } from "../item";
-import UserAPI from "src/api/user";
+import { SeeMoreNoResult } from "@components/no-result";
+import { PageNavigation } from "@components/pagination";
+import { ItemComponent } from "@components/item";
 import BookAPI from "src/api/book";
 import { DeleteBookModal } from "@components/modal/DeleteBookModal";
-import { GetUserInfo } from "src/api/common";
-import { CatalogMappingId } from "src/constant";
+import { CatalogMappingName } from "src/constant/index";
 
-export const BookShelf = ({ selectedCate }) => {
+export const SeeAllTemplate = ({ selectedCate }) => {
   const router = useRouter();
 
   const [totalProduct, setTotalProduct] = useState(0);
@@ -18,50 +16,28 @@ export const BookShelf = ({ selectedCate }) => {
   const [itemsPerPage, setItemsPerPage] = useState(24);
   const [page, setPage] = useState(1);
   const [dataListProducts, setDataListProducts] = useState(null);
+  const [category, setCategory] = useState(router.query["category"]);
   const [modalType, setModalType] = useState("");
   const [deleteBookId, setDeleteBookId] = useState("");
 
-  const [param, setParam] = useState({ search: null });
-
+  useEffect(() => {
+    router.isReady && setCategory(router.query.category);
+  }, [router]);
 
   useEffect(() => {
-    setPage(1);
-    featDataListProducts(selectedCate, param.search, 1);
-  }, [selectedCate, itemsPerPage, param.search]);
+    featDataListProducts(selectedCate);
+  }, [category, page, selectedCate, itemsPerPage]);
 
-  useEffect(() => {
-    featDataListProducts(selectedCate, param.search, page);
-  }, [page])
+  const featDataListProducts = (selectedCate) => {
 
-  useEffect(() => {
-    router.query &&
-      setParam({
-        search: router.query.search,
-      });
-  }, [router.query]);
-
-  const featDataListProducts = (selectedCate, search, page) => {
     setIsLoading(true);
 
-    console.log(selectedCate);
-    
-    const catalogId =
-      selectedCate !== "all"
-        ? selectedCate
-        : "";
-    const searchKey = search ? search : "";
-
-    UserAPI.getBookShelf({
-      userInfo: GetUserInfo(),
-      catalogId: catalogId,
-      search: searchKey,
+    BookAPI.getHotBooksByCatalog({
+      catalogId: selectedCate,
     })
       .then((res) => {
-        console.log(res.data);
-        setDataListProducts(
-          res?.data.slice((page - 1) * itemsPerPage, page * itemsPerPage)
-        );
-        setTotalProduct(res?.data?.length);
+        setDataListProducts(res?.data.slice((page - 1) * itemsPerPage, page * itemsPerPage));
+        setTotalProduct(res?.data.length);
         setIsLoading(false);
       })
       .catch((err) => {
@@ -79,7 +55,7 @@ export const BookShelf = ({ selectedCate }) => {
 
   return (
     <div className={style["list-series-container"]} id="main-container">
-      <div className={`${style["list-series-tag"]}`}>My Bookshelf</div>
+      <div className={`${style["list-series-tag"]}`}>{CatalogMappingName[`${selectedCate}`]}</div>
       {!isLoading && totalProduct === 0 ? (
         <SeeMoreNoResult />
       ) : (
