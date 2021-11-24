@@ -36,13 +36,13 @@ const LoginTemplate = (props) => {
 
     UserAPI.login({ userInfo: userInfo })
       .then((res) => {
-        
         const userInfo = res?.data;
-        window.localStorage.setItem("userInfo", JSON.stringify(userInfo));
+
         const path = window.localStorage.getItem("routeFromLoginModal");
         window.localStorage.removeItem("routeFromLoginModal");
 
         if (userInfo.role === "USER") {
+          window.localStorage.setItem("userInfo", JSON.stringify(userInfo));
           if (path) {
             router.push(path);
           } else router.push("/");

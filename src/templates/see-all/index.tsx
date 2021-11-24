@@ -36,8 +36,13 @@ export const SeeAllTemplate = ({ selectedCate }) => {
 
 
   useEffect(() => {
+    setPage(1)
     featDataListProducts(selectedCate);
-  }, [category, page, selectedCate, itemsPerPage]);
+  }, [category, selectedCate, itemsPerPage, param.search]);
+
+  useEffect(() => {
+    featDataListProducts(selectedCate);
+  }, [page]);
 
   const featDataListProducts = (selectedCate) => {
 

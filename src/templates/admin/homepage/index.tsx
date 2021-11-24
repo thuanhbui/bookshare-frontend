@@ -4,6 +4,7 @@ import styles from "./user-management.module.scss";
 import AdminAPI from "src/api/admin";
 import { GetUserInfo } from "src/api/common";
 import { PageNavigation } from "@components/pagination";
+import { useRouter } from "next/router";
 
 const { Search } = Input;
 
@@ -20,15 +21,22 @@ export const UserManagementTemplate = () => {
   const [itemsPerPage, setItemsPerPage] = useState(10);
 
   const onSearchUsername = (e) => {
-    setSearch({ ...search, username: e});
+    setSearch({ ...search, username: e });
   };
   const onSearchEmail = (e) => {
     setSearch({ ...search, email: e });
   };
 
+  const router = useRouter();
+
   useEffect(() => {
-    fetchData(null, page);
-    setFirstLoadPage(false);
+    const userInfo = GetUserInfo();
+    if (!userInfo || userInfo?.role !== "ADMIN") {
+      router.push("/admin/login");
+    } else {
+      fetchData(null, page);
+      setFirstLoadPage(false);
+    }
   }, []);
 
   useEffect(() => {
@@ -56,8 +64,8 @@ export const UserManagementTemplate = () => {
           (user) =>
             user.username
               .toLowerCase()
-              .indexOf(search.username.toLowerCase()) >= 0 
-              && user.email.toLowerCase().indexOf(search.email.toLowerCase()) >= 0
+              .indexOf(search.username.toLowerCase()) >= 0 &&
+            user.email.toLowerCase().indexOf(search.email.toLowerCase()) >= 0
         );
         setUserList(
           filteredData.slice((page - 1) * itemsPerPage, page * itemsPerPage)

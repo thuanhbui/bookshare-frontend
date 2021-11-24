@@ -28,8 +28,13 @@ export const NewReleaseTemplate = ({ selectedCate }) => {
   }, [router]);
 
   useEffect(() => {
+    setPage(1);
     featDataListProducts(selectedCate);
-  }, [category, page, selectedCate, itemsPerPage, param.search]);
+  }, [category, selectedCate, itemsPerPage, param.search]);
+
+  useEffect(() => {
+    featDataListProducts(selectedCate);
+  }, [page]);
 
   useEffect(() => {
     router.query &&

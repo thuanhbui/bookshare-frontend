@@ -30,15 +30,18 @@ const LoginTemplate = (props) => {
     UserAPI.login({ userInfo: userInfo })
       .then((res) => {
         const userInfo = res?.data;
-        window.localStorage.setItem("userInfo", JSON.stringify(userInfo));
+
         const path = window.localStorage.getItem("routeFromLoginModal");
         window.localStorage.removeItem("routeFromLoginModal");
 
         if (userInfo.role === "USER") {
-          setNotification("Please check your username and password")
+          setNotification("Please check your username and password");
         } else {
-          router.push("admin/homepage");
-        };
+          if (userInfo.role === "ADMIN") {
+            window.localStorage.setItem("userInfo", JSON.stringify(userInfo));
+            router.push("/admin/homepage");
+          } else setNotification("Please check your username and password");
+        }
       })
       .catch((err) => {
         console.log(err);
