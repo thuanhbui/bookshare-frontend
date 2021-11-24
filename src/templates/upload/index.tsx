@@ -132,11 +132,18 @@ export const UploadBook = () => {
     validateFileEmpty();
     !catalogId && setCatalogErrMsg(true);
 
+    const episodeThumbValid =
+      episodeThumbnail.ratioClassname === "convention-valid" &&
+      episodeThumbnail.sizeClassname === "convention-valid" &&
+      episodeThumbnail.extClassname === "convention-valid" &&
+      episodeThumbnail.widthClassname === "convention-valid";
+
     if (
       !uploadContent.title.isEmpty &&
       uploadContent.title.isValid &&
       uploadContent.description.isValid &&
       !episodeThumbnail.isEmpty &&
+      episodeThumbValid &&
       !uploadContent.file.isEmpty &&
       !catalogErrMsg
     ) {
